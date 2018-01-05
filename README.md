@@ -2,14 +2,9 @@
  ## Autor: `Fábio Moura de Oliveira`
  
  
-`Descrição`:    Scripts sql para a criação das tabelas que serão utilizadas para análise da loteria.
-Obs.: No momento está sendo criado e atualizados scripts sql para o jogo da lotofacil.
-[]()
+`Descrição`: Sql utilizados pra criar as tabelas, views, triggers, pra jogos da loteria.   
 
+****
+O sql foi criado pra ser utilizados em banco de dados postgresql.
 
-Os arquivos de scripts devem ser executados nesta ordem:" 001_lotofacil_resultado.sql
-
-
-
-002_lotofacil_tabelas_id.sql
-003_loto
+Pra maiores esclarecimentos, como gerar os scripts, veja a página wiki deste repositório.
