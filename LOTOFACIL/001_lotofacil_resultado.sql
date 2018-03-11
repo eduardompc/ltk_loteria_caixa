@@ -105,7 +105,7 @@ CREATE TABLE lotofacil.lotofacil_resultado_num (
     num_11 + num_12 + num_13 + num_14 + num_15 + num_16 + num_17 + num_18 + num_19 + num_20 +
     num_21 + num_22 + num_23 + num_24 + num_25 ) = 15),
 
-  CONSTRAINT lotofacil_resultado_pk PRIMARY KEY (concurso),
+  CONSTRAINT lotofacil_resultado_pk PRIMARY KEY (concurso)
 
 );
 comment on table lotofacil.lotofacil_resultado_num is
@@ -1124,6 +1124,67 @@ create table lotofacil.lotofacil_resultado_bolas_sobe_desce(
 );
 
 
+/**
+  Esta tabela indica quantas bolas passou de um status pra outro,
+  isto ajudará a decidir quantas bolas deve ser selecionadas.
+  Os status são:
+  ainda_nao_saiu
+  deixou_de_sair
+  novo
+  repetindo.
+
+  As possíveis passagem de status são:
+  de 'deixou_de_sair' pra 'novo'
+
+  de 'novo' pra 'deixou_de_sair' ou
+  de 'novo' pra 'repetindo'
+
+  de 'repetindo' pra 'repetindo' ou
+  de 'repetindo' pra 'deixou_de_sair'
+
+  de 'deixou_de_sair' pra 'ainda_nao_saiu'
+
+  Então, haverá estes campos
+
+  de_deixou_de_sair_pra_novo
+  de deixou_de_sair_pra_ainda_nao_saiu
+
+  de_novo_pra_repetindo
+  de_novo_pra_deixou_de_sair
+
+  de ainda_nao_saiu pra ainda nao saiu
+  de ainda_nao_saiu pra novo
+
+  Vamos encurtar os nomes:
+  deixou_de_sair => de_dx_sair
+
+ */
+drop table if exists lotofacil.lotofacil_resultado_passagem_de_status;
+create table lotofacil.lotofacil_resultado_passagem_de_status(
+  concurso numeric not null,
+
+  de_ainda_pra_novo numeric not null,
+  de_ainda_pra_ainda numeric not null,
+
+  de_novo_pra_deixou numeric not null,
+  de_novo_pra_repetindo numeric not null,
+
+  de_deixou_pra_novo numeric not null,
+  de_deixou_pra_ainda numeric not NULL,
+
+  de_repetindo_pra_repetindo numeric not null,
+  de_repetindo_pra_deixou numeric not null,
+
+  constraint lotofacil_resultado_passagem_de_status_fk FOREIGN KEY (concurso)
+    references lotofacil.lotofacil_resultado_bolas(concurso)
+
+);
+
+
+
+
+
+
 
 /***
   Função para atualizar as tabelas de novos, repetidos, ainda_nao_saiu e deixou_de_sair.
@@ -1191,9 +1252,18 @@ DECLARE
 
   uA numeric;
   uB numeric;
-
-
-
+  
+  qt_de_ainda_pra_novo numeric;
+  qt_de_ainda_pra_ainda numeric;
+  
+  qt_de_novo_pra_deixou numeric;
+  qt_de_novo_pra_repetindo numeric;
+  
+  qt_de_deixou_pra_novo numeric;
+  qt_de_deixou_pra_ainda numeric;
+  
+  qt_de_repetindo_pra_deixou numeric;
+  qt_de_repetindo_pra_repetindo numeric;
 
 BEGIN
   -- Deleta todas as tabelas referente a novos, repetidos, ainda nao saiu, deixou de sair.
@@ -1215,6 +1285,8 @@ BEGIN
 
   Delete from lotofacil.lotofacil_resultado_num_sobe_desce;
   Delete from lotofacil.lotofacil_resultado_bolas_sobe_desce;
+
+  Delete from lotofacil.lotofacil_resultado_passagem_de_status;
 
 
   -- A cada iteração do loop abaixo, os valores de cada elemento deste arranjo 
@@ -1476,8 +1548,92 @@ BEGIN
     qt_Impares := 0;
     soma_frequencia := 0;
 
+    qt_de_ainda_pra_novo := 0;
+    qt_de_ainda_pra_ainda := 0;
+
+    qt_de_novo_pra_deixou := 0;
+    qt_de_novo_pra_repetindo := 0;
+
+    qt_de_deixou_pra_novo := 0;
+    qt_de_deixou_pra_ainda := 0;
+
+    qt_de_repetindo_pra_deixou := 0;
+    qt_de_repetindo_pra_repetindo := 0;
+
+
+
+
     uA := 1;
     WHILE uA <= 25 LOOP
+      /*
+        Devemos verificar a quantidade de bolas que passou de uma transição de status pra
+        outra pois, no fim deste loop, cada célula do arranjo lotofacil_resultado_num_frequencia
+        terá um novo valor.
+
+        No arranjo lotofacil_resultado_num_frequencia, armazenará a últiam frequência, onde
+        -1 indica que deixou de sair
+        menor que -1 indica que ainda não saiu
+        igual a 1 indica que é novo
+        maior que 1 repetindo.
+
+        No arranjo lotofacil_resultado_num_atual indica se a bola saiu ou não,
+        1 se saiu, 0 se não saiu.
+
+        De posse destes dados, podem saber de qual status uma bola fez a transição.
+        Por exemplo, uma bola, que estava no status novo na último concurso,
+        pode deixar de sair no concurso atual, ou seja, passou do estado 'novo' pra 'deixou de sair'.
+
+        O objetivo disto, é saber qual são as transições que mais ocorre e assim, fazer
+        uma melhor seleção dos filtros.
+       */
+      -- De ainda não saiu pra novo
+      if  (lotofacil_resultado_num_frequencia[uA] < -1) AND
+          (lotofacil_resultado_num_atual[uA] = 1) then
+            qt_de_ainda_pra_novo := qt_de_ainda_pra_novo + 1;
+      end if;
+
+      -- De ainda não saiu pra ainda nao saiu
+      if (lotofacil_resultado_num_frequencia[uA] < -1) and
+         (lotofacil_resultado_num_atual[uA] = 0) then
+        qt_de_ainda_pra_ainda := qt_de_ainda_pra_ainda + 1;
+      END IF;
+
+      -- De novo pra deixou de sair
+      if (lotofacil_resultado_num_frequencia[uA] = 1) and
+        (lotofacil_resultado_num_atual[uA] = 0) then
+        qt_de_novo_pra_deixou := qt_de_novo_pra_deixou + 1;
+      END IF;
+
+      -- De novo pra repetindo
+      if (lotofacil_resultado_num_frequencia[uA] = 1) and
+        (lotofacil_resultado_num_atual[uA] = 1) then
+        qt_de_novo_pra_repetindo := qt_de_novo_pra_repetindo + 1;
+      END IF;
+
+      -- De deixou de sair pra novo
+      if (lotofacil_resultado_num_frequencia[uA] = -1) and
+        (lotofacil_resultado_num_atual[uA] = 1) then
+        qt_de_deixou_pra_novo := qt_de_deixou_pra_novo + 1;
+      END IF;
+
+      -- De deixou de sair para ainda nao saiu
+      if (lotofacil_resultado_num_frequencia[uA] = -1) and
+        (lotofacil_resultado_num_atual[uA] = 0) then
+        qt_de_deixou_pra_ainda := qt_de_deixou_pra_ainda + 1;
+      END IF;
+
+      -- De repetindo pra deixou
+      if (lotofacil_resultado_num_frequencia[uA] > 1) and
+        (lotofacil_resultado_num_atual[uA] = 0) then
+        qt_de_repetindo_pra_deixou := qt_de_repetindo_pra_deixou + 1;
+      END IF;
+
+      -- De repetindo pra repetindo
+      if (lotofacil_resultado_num_frequencia[uA] > 1) and
+        (lotofacil_resultado_num_atual[uA] = 1) then
+        qt_de_repetindo_pra_repetindo := qt_de_repetindo_pra_repetindo + 1;
+      END IF;
+
       -- Se a bola saiu, incrementar, senão decrementar.
       if lotofacil_resultado_num_atual[uA] = 1 THEN 
         lotofacil_resultado_num_sobe_desce[uA] := lotofacil_resultado_num_sobe_desce[uA] + 1;
@@ -1530,6 +1686,8 @@ BEGIN
               lotofacil_resultado_num_frequencia [uA] := -1;
           END CASE;
         END IF;
+
+
       END IF;
 
       -- Estamos percorrendo os campos num_ em ordem crescente, onde o primeiro
@@ -1606,6 +1764,28 @@ BEGIN
         (reg_lotofacil_resultado_num.concurso, uA, lotofacil_resultado_num_sobe_desce[uA]);
 
     END LOOP;
+
+    Insert into lotofacil.lotofacil_resultado_passagem_de_status
+      (concurso,
+       de_ainda_pra_novo,
+       de_ainda_pra_ainda,
+       de_novo_pra_deixou,
+       de_novo_pra_repetindo,
+       de_deixou_pra_novo,
+       de_deixou_pra_ainda,
+       de_repetindo_pra_repetindo,
+       de_repetindo_pra_deixou) VALUES
+      (reg_lotofacil_resultado_num.concurso,
+        qt_de_ainda_pra_novo,
+        qt_de_ainda_pra_ainda,
+        qt_de_novo_pra_deixou,
+        qt_de_novo_pra_repetindo,
+        qt_de_deixou_pra_novo,
+        qt_de_deixou_pra_ainda,
+        qt_de_repetindo_pra_repetindo,
+        qt_de_repetindo_pra_deixou
+      );
+
 
     -- A tabela lotofacil_resultado_num_frequencia tem a frequencia baseada nos últimos concursos.
     -- A outra tabela, lotofacil_resultado_num_frequencia_total, tem a soma de cada frequencia de
@@ -1862,11 +2042,6 @@ create view lotofacil.v_lotofacil_resultado_deixou_de_sair_qt_por_concurso AS
   Select qt_deixou_de_sair, count(*) as qt_vezes from lotofacil.lotofacil_resultado_deixou_de_sair_bolas
     group by qt_deixou_de_sair
   order by qt_vezes desc, qt_deixou_de_sair asc;
-
-
-
-
-
 
 
 

@@ -117,8 +117,6 @@ create index lotofacil_bolas_idx_19 on lotofacil.lotofacil_bolas(
   b_1, b_2, b_3, b_4, b_5, b_6, b_7, b_8, b_9, b_10,
   b_11, b_12, b_13, b_14, b_15, b_16, b_17, b_18);
 
-
-
 Insert into lotofacil.lotofacil_aleatorio (ltf_id, ltf_qt, ltf_aleatorio_seq)
     Select ltf_id, ltf_qt, 0 from lotofacil.lotofacil_num
 order by ltf_qt asc, ltf_id asc;

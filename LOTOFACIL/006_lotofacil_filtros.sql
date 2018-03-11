@@ -15,9 +15,27 @@ create table lotofacil.lotofacil_filtros(
   concurso numeric not null,
   acertos numeric null,
   concurso_bola_qt_vezes numeric null,
+
+  id_seq_aleatorio numeric null,
+  id_seq_complementar numeric null,
+  id_seq_novos_repetidos numeric null,
+
+  novos_repetidos_id_alternado numeric default 0,
+  novos_repetidos_id numeric default 0,
+  qt_alt_seq numeric default 0,
+
+  data_aleatorio TIMESTAMP default 0,
+  aleatorio_sequencial numeric default 0,
+
   concurso_soma_frequencia_bolas numeric null,
+
   CONSTRAINT lotofacil_filtros_fk FOREIGN KEY (ltf_id) REFERENCES lotofacil.lotofacil_num(ltf_id)
 );
+comment on column lotofacil.lotofacil_filtros.id_seq_novos_repetidos is
+'';
+
+
+
 alter table lotofacil.lotofacil_filtros drop CONSTRAINT lotofacil_filtros_fk;
 alter table lotofacil.lotofacil_filtros add CONSTRAINT lotofacil_filtros_fk FOREIGN KEY (ltf_id) REFERENCES lotofacil.lotofacil_num(ltf_id) on update cascade on delete cascade;
 
@@ -98,6 +116,8 @@ Select
   ltf_bolas.b_17,
   ltf_bolas.b_18,
 
+  ltf_comp.id_complementar_sequencial,
+
   ltf_par_impar.par,
   ltf_par_impar.impar,
 
@@ -148,6 +168,7 @@ Select
 from lotofacil.lotofacil_filtros ltf_filtros,
   lotofacil.lotofacil_bolas ltf_bolas,
   lotofacil.lotofacil_diferenca_entre_bolas ltf_dif,
+  lotofacil.lotofacil_complementar ltf_comp,
   
   lotofacil.lotofacil_id ltf_id,
   lotofacil.lotofacil_id_par_impar ltf_par_impar,
@@ -162,6 +183,7 @@ from lotofacil.lotofacil_filtros ltf_filtros,
 where ltf_filtros.ltf_id = ltf_bolas.ltf_id AND 
   ltf_filtros.ltf_id = ltf_id.ltf_id AND
   ltf_filtros.ltf_id = ltf_dif.ltf_id and
+  ltf_filtros.ltf_id = ltf_comp.ltf_id and
   
   ltf_id.par_impar_id = ltf_par_impar.par_impar_id AND
   ltf_id.ext_int_id = ltf_externo_interno.ext_int_id AND
@@ -173,7 +195,13 @@ where ltf_filtros.ltf_id = ltf_bolas.ltf_id AND
   ltf_filtros.novos_repetidos_id = ltf_novos_repetidos.novos_repetidos_id and
   
   ltf_bolas.ltf_id = ltf_id.ltf_id and
-  ltf_bolas.ltf_id = ltf_dif.ltf_id
+  ltf_bolas.ltf_id = ltf_dif.ltf_id and
+  ltf_bolas.ltf_id = ltf_comp.ltf_id and
+
+  ltf_id.ltf_id = ltf_dif.ltf_id AND
+  ltf_id.ltf_id = ltf_comp.ltf_id and
+
+  ltf_dif.ltf_id = ltf_comp.ltf_id
 
 order by filtros_id;
 

@@ -619,6 +619,9 @@ create function lotofacil.fn_lotofacil_atualizar_novos_repetidos_4(concurso_anal
 
     uA numeric default 0;
 
+    data_hora_inicial timestamp;
+    data_hora_final timestamp;
+
   begin
 
     -- Pega os dados do concurso atual selecionado.
@@ -679,7 +682,8 @@ create function lotofacil.fn_lotofacil_atualizar_novos_repetidos_4(concurso_anal
     drop index if exists lotofacil.lotofacil_novos_repetidos_idx_3;
     drop index if exists lotofacil.lotofacil_novos_repetidos_idx_4;
 
-    Raise Notice 'Atualizando campo novos e repetidos, início: %', now();
+    data_hora_inicial := now();
+    Raise Notice 'Atualizando campo novos e repetidos, início: %', data_hora_inicial;
 
     -- Aqui, iremos percorrer todas as combinações da tabela lotofacil_num
     -- que armazena as combinações da lotofacil e comparar cada campo num
@@ -691,28 +695,7 @@ create function lotofacil.fn_lotofacil_atualizar_novos_repetidos_4(concurso_anal
     contador_registro := 0;
     for reg_lotofacil_num in
       Select * from lotofacil.lotofacil_num ltf_num
-        /*
-        ,lotofacil.lotofacil_diferenca_entre_bolas ltf_dif
-        where ltf_num.ltf_id = ltf_dif.ltf_id
-        */
-      order by ltf_id
-    /*
-        ltf_dif.qt_alt desc,
-        ltf_dif.qt_dif_1 asc,
-        ltf_dif.ltf_id desc,
-        ltf_dif.qt_dif_2 asc,
-        ltf_dif.qt_dif_3 asc,
-        ltf_dif.qt_dif_4 asc,
-        ltf_dif.qt_dif_5 asc,
-        ltf_dif.qt_dif_6 asc,
-        ltf_dif.qt_dif_7 asc,
-        ltf_dif.qt_dif_8 asc,
-        ltf_dif.qt_dif_9 asc,
-        ltf_dif.qt_dif_10 asc,
-        ltf_dif.qt_dif_11 asc
-        */
-
-
+      order by ltf_qt asc, random()
     LOOP
       lotofacil_num[0] = reg_lotofacil_num.ltf_id;
       lotofacil_num[1] = reg_lotofacil_num.num_1;
@@ -789,7 +772,8 @@ create function lotofacil.fn_lotofacil_atualizar_novos_repetidos_4(concurso_anal
       contador_registro := contador_registro + 1;
       -- Raise Notice 'Registro: %, %', contador_registro, reg_lotofacil_num.ltf_id;
 
-      -- Gerar o id sequencial:
+      -- Gera um id sequencial pra cada quantidade de novos, o objetivo
+      -- disto é quando for atualizado todas as combinações com o mesmo grupo estarão juntas
       id_alternado[qt_novos] := id_alternado[qt_novos] + 1;
 
       --qt_alt_sequencial[reg_lotofacil_num.qt_alt] := qt_alt_sequencial[reg_lotofacil_num.qt_alt] + 1;
@@ -803,7 +787,11 @@ create function lotofacil.fn_lotofacil_atualizar_novos_repetidos_4(concurso_anal
 
     END LOOP;
 
-    Raise Notice 'Atualização: campos novos e repetidos, fim: %', now();
+    Raise Notice 'Fim da atualização';
+    Raise Notice 'Início: %', data_hora_inicial;
+    data_hora_final := Now();
+    Raise Notice 'Fim: %', data_hora_final;
+
 
     /**
       Recria os índices que foram apagados.
@@ -878,22 +866,12 @@ create function lotofacil.fn_lotofacil_acertos() returns void
 Select lotofacil.fn_lotofacil_acertos();
 
 /**
-  Toda vez que realizarmos os filtros das informações que queremos
-  retornar, iremos inserir as informações filtradas nesta tabela.
+  Indica em cada combinação, a quantidade de acertos de 11, 12, 13, 14 ou 15
+  números que saiu até hoje.
  */
-drop table if exists lotofacil.lotofacil_filtros;
-create table lotofacil.lotofacil_filtros(
-  filtros_id BIGSERIAL,
-  data TIMESTAMP,
-  ltf_id numeric not null,
-  ltf_qt numeric not null,
-  concurso numeric not null,
-  acertos numeric null,
-  concurso_bola_qt_vezes numeric null,
-  CONSTRAINT lotofacil_filtros_fk FOREIGN KEY (ltf_id) REFERENCES lotofacil.lotofacil_num(ltf_id)
-);
-alter table lotofacil.lotofacil_filtros drop CONSTRAINT lotofacil_filtros_fk;
-alter table lotofacil.lotofacil_filtros add CONSTRAINT lotofacil_filtros_fk FOREIGN KEY (ltf_id) REFERENCES lotofacil.lotofacil_num(ltf_id) on update cascade on delete cascade;
+
+
+
 
 
 
@@ -939,17 +917,6 @@ Insert into lotofacil.lotofacil_soma_agrupado_por_qt(num_soma, ltf_qt, qt_vezes)
       group by num_soma, ltf_qt
     order by ltf_qt, num_soma desc;
 
-
-/**
-  Esta tabela irá percorrer cada combinação, e atribuir um id sequencial.
-  Pra cada combinação, iremos pegar os números complementares,
- */
-Drop table if exists lotofacil.lotofacil_aleatorio;
-create table lotofacil.lotofacil_aleatorio(
-  ltf_id numeric not null,
-  ltf_qt numeric not null check(ltf_qt between 15 and 18),
-  ltf_aleatorio_seq numeric not null
-);
 
 Drop table if exists lotofacil.lotofacil_hash;
 create table lotofacil.lotofacil_hash(
