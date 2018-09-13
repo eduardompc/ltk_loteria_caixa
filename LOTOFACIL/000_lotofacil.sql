@@ -59,7 +59,7 @@ drop table if exists lotofacil.lotofacil_num;
 /**
   Tabela principal que armazena todas as combinações possíveis da lotofacil de 15, 16, 17 e 18 bolas.
  */
-
+drop table if exists lotofacil.lotofacil_num;
 CREATE TABLE lotofacil.lotofacil_num (
   ltf_id         NUMERIC      NOT NULL,
   ltf_qt         numeric         NOT NULL check (ltf_qt in (15, 16, 17, 18)),
@@ -270,80 +270,6 @@ create index lotofacil_bolas_idx_19 on lotofacil.lotofacil_bolas(
   b_11, b_12, b_13, b_14, b_15, b_16, b_17, b_18);
 
 
-drop table if exists lotofacil.lotofacil_diferenca;
-create table lotofacil.lotofacil_diferenca_entre_bolas(
-  ltf_id numeric not null,
-  ltf_qt numeric not null,
-  df_1 numeric not null,
-  df_2 numeric not null,
-  df_3 numeric not null,
-  df_4 numeric not null,
-  df_5 numeric not null,
-  df_6 numeric not null,
-  df_7 numeric not null,
-  df_8 numeric not null,
-  df_9 numeric not null,
-  df_10 numeric not NULL,
-  df_11 numeric not null,
-  df_12 numeric not null,
-  df_13 numeric not null,
-  df_14 numeric not null,
-  df_15 numeric default 0,
-  df_16 numeric default 0,
-  df_17 numeric default 0,
-  df_18 numeric default 0,
-  qt_1 numeric default 0,
-  qt_2 numeric default 0,
-  qt_3 numeric default 0,
-  qt_4 numeric default 0,
-  qt_5 numeric default 0,
-  qt_6 numeric default 0,
-  qt_7 numeric default 0,
-  qt_8 numeric default 0,
-  qt_9 numeric default 0,
-  qt_10 numeric default 0,
-  qt_11 numeric default 0,
-  qt_alt numeric default 0
-);
-
-
-copy lotofacil.lotofacil_diferenca_entre_bolas (
-  ltf_id,
-  ltf_qt,
-  df_1,
-  df_2,
-  df_3,
-  df_4,
-  df_5,
-  df_6,
-  df_7,
-  df_8,
-  df_9,
-  df_10,
-  df_11,
-  df_12,
-  df_13,
-  df_14,
-  df_15,
-  df_16,
-  df_17,
-  df_18,
-  qt_dif_1,
-  qt_dif_2,
-  qt_dif_3,
-  qt_dif_4,
-  qt_dif_5,
-  qt_dif_6,
-  qt_dif_7,
-  qt_dif_8,
-  qt_dif_9,
-  qt_dif_10,
-  qt_dif_11,
-  qt_alt) from './lotofacil_diferenca_entre_bolas' with (delimiter ';', header true, format csv);
-
-
-
-
 /**
   Cria os índices pra aumentar o desempenho.
  */
@@ -422,6 +348,37 @@ create index lotofacil_num_bolas_concurso_idx_1 on lotofacil.lotofacil_num_bolas
 create index lotofacil_num_bolas_concurso_idx_2 on lotofacil.lotofacil_num_bolas_concurso(concurso);
 create index lotofacil_num_bolas_concurso_idx_3 on lotofacil.lotofacil_num_bolas_concurso(concurso_soma_frequencia_bolas);
 
+/*
+  Irei alterar a tabela lotofacil.lotofacil_num_bolas_concurso pra
+  lotofacil.lotofacil_num_bolas_frequencia_concurso.
+ */
+drop table if exists lotofacil.lotofacil_num_bolas_frequencia_concurso;
+create table lotofacil.lotofacil_num_bolas_frequencia_concurso(
+  ltf_id numeric not null,
+  ltf_qt numeric not null check (ltf_qt In (15, 16, 17, 18)),
+  concurso_inicial numeric not null,
+  concurso_final numeric not null,
+  --concurso_bola_qt_vezes numeric default 0,
+  concurso_soma_frequencia_bolas numeric default 0,
+  CONSTRAINT lotofacil_num_bolas_frequencia_concurso_UNK unique(ltf_id)
+);
+comment on column lotofacil.lotofacil_num_bolas_frequencia_concurso.concurso_inicial is
+'Numero do concurso inicial em que a frequencia do intervalo e baseada.';
+comment on column lotofacil.lotofacil_num_bolas_frequencia_concurso.concurso_final is
+'Numero do concurso final em que a frequencia do intervalo e baseada.';
+comment on column lotofacil.lotofacil_num_bolas_frequencia_concurso.concurso_soma_frequencia_bolas IS
+'A soma da quantidade de vezes de cada bola daquela combinação';
+/**
+  Cria índices pra os campos mais pesquisados.
+ */
+drop index lotofacil_num_bolas_frequencia_concurso_idx_1;
+drop index lotofacil_num_bolas_frequencia_concurso_idx_2;
+drop index lotofacil_num_bolas_frequencia_concurso_idx_3;
+
+create index lotofacil_num_bolas_frequencia_concurso_idx_1 on lotofacil.lotofacil_num_bolas_concurso(ltf_id);
+create index lotofacil_num_bolas_frequencia_concurso_idx_2 on lotofacil.lotofacil_num_bolas_concurso(concurso);
+create index lotofacil_num_bolas_frequencia_concurso_idx_3 on lotofacil.lotofacil_num_bolas_concurso(concurso_soma_frequencia_bolas);
+
 /**
   Insere na tabela lotofacil_num_bolas_concurso, a soma das quantidades de vezes que cada bola
   daquela combinação saiu até hoje no concurso, pra cada combinação possível na lotofácil
@@ -487,16 +444,12 @@ create function lotofacil.fn_lotofacil_resultado_frequencia_total_por_concurso(c
   end
   $$;
 
-select * from lotofacil.fn_lotofacil_resultado_frequencia_total_por_concurso(1582);
+select * from lotofacil.fn_lotofacil_resultado_frequencia_total_por_concurso(1641);
 
 
 
 /**
-  Esta tabela deve ser atualizada os campos novos_repetidos_id e concurso
-  toda vez que um novo concurso é sorteado.
-  O objetivo desta tabela é pegar as combinações baseado no último jogo sorteado.
-  Pois, observou através de frequência que certas combinaçãos de novos e repetidos tem
-  maior frequência pra sair.
+  Esta tabela armazena pra cada
  */
 drop table if exists lotofacil.lotofacil_novos_repetidos;
 create table lotofacil.lotofacil_novos_repetidos(
@@ -505,12 +458,161 @@ create table lotofacil.lotofacil_novos_repetidos(
   novos_repetidos_id numeric not null,
   novos_repetidos_id_alternado numeric not null,
   concurso numeric not null,
+  qt_alt_seq numeric default 0,
+  cmp_b_id numeric default 0,
+  cmp_b_id_seq_alternado numeric default 0,
+  cmp_b1 NUMERIC DEFAULT 0,
+  cmp_b2 NUMERIC DEFAULT 0,
+  cmp_b3 NUMERIC DEFAULT 0,
+  cmp_b4 NUMERIC DEFAULT 0,
+  cmp_b5 NUMERIC DEFAULT 0,
+  cmp_b6 NUMERIC DEFAULT 0,
+  cmp_b7 NUMERIC DEFAULT 0,
+  cmp_b8 NUMERIC DEFAULT 0,
+  cmp_b9 NUMERIC DEFAULT 0,
+  cmp_b10 NUMERIC DEFAULT 0,
+  cmp_b11 NUMERIC DEFAULT 0,
+  cmp_b12 NUMERIC DEFAULT 0,
+  cmp_b13 NUMERIC DEFAULT 0,
+  cmp_b14 NUMERIC DEFAULT 0,
+  cmp_b15 NUMERIC DEFAULT 0,
+  
   CONSTRAINT lotofacil_novos_repetidos_pk PRIMARY KEY (ltf_id),
   CONSTRAINT lotofacil_novos_repetidos_fk FOREIGN KEY (ltf_id) REFERENCES lotofacil.lotofacil_num(ltf_id)
   on update cascade on delete cascade
 );
-comment on column lotofacil.lotofacil_novos_repetidos.concurso IS
-'Indica de qual concurso da tabela lotofacil.lotofacil_resultado_num, a quantidade de novos e reptidos é baseada.';
+
+Select lotofacil.fn_lotofacil_novos_repetidos_drop_constraint();
+Select lotofacil.fn_lotofacil_novos_repetidos_add_constraint();
+
+
+/*
+  Pra aumentar o desempenho, ao inserir muitos registros no banco de dados, é melhor
+  apagar os índices e recriar após todos os dados serem inseridos no banco de dados.
+ */
+drop function if exists lotofacil.fn_lotofacil_novos_repetidos_drop_constraint();
+create function lotofacil.fn_lotofacil_novos_repetidos_drop_constraint()
+  returns void
+  LANGUAGE plpgsql
+  as $$
+  declare
+  begin
+
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_1;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_2;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_3;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_4;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_5;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_6;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_7;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_8;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_9;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_10;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_11;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_12;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_13;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_14;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_15;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_16;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_17;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_18;
+
+    alter table lotofacil.lotofacil_novos_repetidos drop CONSTRAINT lotofacil_novos_repetidos_pk;
+    alter table lotofacil.lotofacil_novos_repetidos drop CONSTRAINT lotofacil_novos_repetidos_fk;
+
+  end $$;
+
+drop function if exists lotofacil.fn_lotofacil_novos_repetidos_add_constraint();
+create function lotofacil.fn_lotofacil_novos_repetidos_add_constraint()
+  returns void
+  LANGUAGE plpgsql
+  as $$
+  declare
+  begin
+
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_1;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_2;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_3;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_4;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_5;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_6;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_7;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_8;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_9;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_10;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_11;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_12;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_13;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_14;
+    drop index if exists lotofacil.lotofacil_novos_repetidos_idx_15;
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_1 on lotofacil.lotofacil_novos_repetidos(cmp_b1);';
+    create index lotofacil_novos_repetidos_idx_1 on lotofacil.lotofacil_novos_repetidos(cmp_b1);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_2 on lotofacil.lotofacil_novos_repetidos(cmp_b2);';
+    create index lotofacil_novos_repetidos_idx_2 on lotofacil.lotofacil_novos_repetidos(cmp_b2);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_3 on lotofacil.lotofacil_novos_repetidos(cmp_b3);';
+    create index lotofacil_novos_repetidos_idx_3 on lotofacil.lotofacil_novos_repetidos(cmp_b3);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_4 on lotofacil.lotofacil_novos_repetidos(cmp_b4);';
+    create index lotofacil_novos_repetidos_idx_4 on lotofacil.lotofacil_novos_repetidos(cmp_b4);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_5 on lotofacil.lotofacil_novos_repetidos(cmp_b5);';
+    create index lotofacil_novos_repetidos_idx_5 on lotofacil.lotofacil_novos_repetidos(cmp_b5);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_6 on lotofacil.lotofacil_novos_repetidos(cmp_b6);';
+    create index lotofacil_novos_repetidos_idx_6 on lotofacil.lotofacil_novos_repetidos(cmp_b6);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_7 on lotofacil.lotofacil_novos_repetidos(cmp_b7);';
+    create index lotofacil_novos_repetidos_idx_7 on lotofacil.lotofacil_novos_repetidos(cmp_b7);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_8 on lotofacil.lotofacil_novos_repetidos(cmp_b8);';
+    create index lotofacil_novos_repetidos_idx_8 on lotofacil.lotofacil_novos_repetidos(cmp_b8);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_9 on lotofacil.lotofacil_novos_repetidos(cmp_b9);';
+    create index lotofacil_novos_repetidos_idx_9 on lotofacil.lotofacil_novos_repetidos(cmp_b9);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_10 on lotofacil.lotofacil_novos_repetidos(cmp_b10);';
+    create index lotofacil_novos_repetidos_idx_10 on lotofacil.lotofacil_novos_repetidos(cmp_b10);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_11 on lotofacil.lotofacil_novos_repetidos(cmp_b11);';
+    create index lotofacil_novos_repetidos_idx_11 on lotofacil.lotofacil_novos_repetidos(cmp_b11);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_12 on lotofacil.lotofacil_novos_repetidos(cmp_b12);';
+    create index lotofacil_novos_repetidos_idx_12 on lotofacil.lotofacil_novos_repetidos(cmp_b12);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_13 on lotofacil.lotofacil_novos_repetidos(cmp_b13);';
+    create index lotofacil_novos_repetidos_idx_13 on lotofacil.lotofacil_novos_repetidos(cmp_b13);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_14 on lotofacil.lotofacil_novos_repetidos(cmp_b14);';
+    create index lotofacil_novos_repetidos_idx_14 on lotofacil.lotofacil_novos_repetidos(cmp_b14);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_15 on lotofacil.lotofacil_novos_repetidos(cmp_b15);';
+    create index lotofacil_novos_repetidos_idx_15 on lotofacil.lotofacil_novos_repetidos(cmp_b15);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_16 on lotofacil.lotofacil_novos_repetidos(novos_repetidos_id);';
+    create index lotofacil_novos_repetidos_idx_16 on lotofacil.lotofacil_novos_repetidos(novos_repetidos_id);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_17 on lotofacil.lotofacil_novos_repetidos(novos_repetidos_id_alternado);';
+    create index lotofacil_novos_repetidos_idx_17 on lotofacil.lotofacil_novos_repetidos(novos_repetidos_id_alternado);
+
+    Raise Notice '%', 'Criando indice  lotofacil_novos_repetidos_idx_18 on lotofacil.lotofacil_novos_repetidos(cmp_b_id);';
+    create index lotofacil_novos_repetidos_idx_18 on lotofacil.lotofacil_novos_repetidos(cmp_b_id);
+
+    Raise Notice '%', 'alter table lotofacil.lotofacil_novos_repetidos add constraint lotofacil_novos_repetidos_pk primary key(ltf_id);';
+    alter table lotofacil.lotofacil_novos_repetidos add constraint lotofacil_novos_repetidos_pk primary key(ltf_id);
+
+    Raise Notice '%', 'alter table lotofacil.lotofacil_novos_repetidos add CONSTRAINT lotofacil_novos_repetidos_fk FOREIGN KEY (ltf_id) REFERENCES lotofacil.lotofacil_num(ltf_id)
+  on update cascade on delete cascade;';
+    alter table lotofacil.lotofacil_novos_repetidos add CONSTRAINT lotofacil_novos_repetidos_fk FOREIGN KEY (ltf_id) REFERENCES lotofacil.lotofacil_num(ltf_id)
+  on update cascade on delete cascade;
+
+  end $$;
+
+
+
+
 /**
   O campo novos_repetidos_id_alternado é bem interessante, se ordenarmos por ele, haverá 11 combinações que uma
   em relação a outro tem identificadores novos x repetidos distintos entre si.

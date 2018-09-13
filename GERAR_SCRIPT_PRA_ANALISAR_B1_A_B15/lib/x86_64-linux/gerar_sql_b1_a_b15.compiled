@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/bin/fpc" Date="1506933533"/>
+  <Params Value=" -MObjFPC -Scaghi -Cg -CirotR -O1 -gw2 -godwarfsets -gl -gh -Xg -gt -l -vewnhibq -Fi/home/fabiuz/meus_documentos/datagrip/LTK/GERAR_SCRIPT_PRA_ANALISAR_B1_A_B15/lib/x86_64-linux -Fu/home/fabiuz/meus_documentos/datagrip/LTK/GERAR_SCRIPT_PRA_ANALISAR_B1_A_B15/ -FU/home/fabiuz/meus_documentos/datagrip/LTK/GERAR_SCRIPT_PRA_ANALISAR_B1_A_B15/lib/x86_64-linux/ gerar_sql_b1_a_b15.lpr"/>
+</CONFIG>

@@ -46,6 +46,7 @@ BEGIN
       Execute lotofacil.fn_lotofacil_resultado_novos_repetidos(tg_op, old.concurso, resultado_num);
       return Old;
     END IF;
+
   END IF;
 
   -- Só chegaremos aqui, se for uma inserção ou atualização.
@@ -81,8 +82,6 @@ BEGIN
   Execute lotofacil.fn_lotofacil_resultado_id(new.concurso, resultado_num);
   Execute lotofacil.fn_lotofacil_resultado_novos_repetidos(tg_op, new.concurso, resultado_num);
 
-
-
   RETURN new;
 END $$;
 
@@ -93,6 +92,8 @@ AFTER INSERT OR DELETE OR UPDATE
 FOR EACH ROW
 EXECUTE PROCEDURE lotofacil.fn_lotofacil_resultado_num();
 
+drop function if exists lotofacil.fn_lotofacil_resultado_coluna_b(numeric, numeric);
+create function lotofacil.fn_lotofacil_resultado_coluna
 
 /*
   Esta função é chamada, quando qualquer registro for inserido na tabela lotofacil.lotofacil_num.
@@ -144,7 +145,7 @@ create function lotofacil.fn_lotofacil_resultado_bolas(concurso_novo numeric, re
         values(concurso_novo, soma_bola);
 
 
-      --execute lotofacil.fn_lotofacil_resultado_grupos(concurso_novo, resultado_bolas);
+      execute lotofacil.fn_lotofacil_resultado_grupos(concurso_novo, resultado_bolas);
     END;
   $$;
 
@@ -204,9 +205,13 @@ create function lotofacil.fn_lotofacil_resultado_id(concurso_novo numeric, resul
                                                  qrt_id,
                                                  trio_id,
                                                  b1_id,
+                                                  b1_b2_id,
+                                                  b1_b2_b3_id,
+                                                  b1_b2_b3_b4_id,
+                                                  b1_b2_b3_b4_b5_id,
                                                  b1_b15_id,
                                                  b1_b8_b15_id,
-                                                 b1_b4_b8_b12_b15_id)
+                                                 b1_b4_b8_b12_b15_id, dz_id)
     Select concurso_novo,
       ltf_id,
       par_impar_id, ext_int_id,
@@ -218,9 +223,13 @@ create function lotofacil.fn_lotofacil_resultado_id(concurso_novo numeric, resul
       qrt_id,
       trio_id,
       b1_id,
+      b1_b2_id,
+      b1_b2_b3_id,
+      b1_b2_b3_b4_id,
+      b1_b2_b3_b4_b5_id,
       b1_b15_id,
       b1_b8_b15_id,
-      b1_b4_b8_b12_b15_id from lotofacil.lotofacil_id
+      b1_b4_b8_b12_b15_id, dz_id from lotofacil.lotofacil_id
     where ltf_id = ltf_id_concurso;
     Raise Notice 'Registro inserido, concurso: %, ltf_id: %', concurso_novo, ltf_id_concurso;
 
@@ -687,6 +696,11 @@ create function lotofacil.fn_lotofacil_resultado_grupos(concurso_novo numeric, r
         END LOOP ;
       END LOOP;
     END LOOP;
+
+    ---return;
+    -- Não iremos gerar os grupos abaixo.
+
+
 
     for uA in 1..15 LOOP
       for uB in (uA + 1)..15 loop
