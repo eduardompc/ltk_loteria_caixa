@@ -90,6 +90,11 @@ CREATE TABLE lotofacil_num (
   num_24                   NUMERIC DEFAULT 0 check (num_24 in (0, 1)),
   num_25                   NUMERIC DEFAULT 0 check (num_25 in (0, 1)),
 
+
+
+
+
+
   CONSTRAINT lotofacil_num_chk check (
     (num_1 + num_2  + num_3  + num_4  + num_5  + num_6  + num_7  + num_8  + num_9  + num_10 +
     num_11 + num_12 + num_13 + num_14 + num_15 + num_16 + num_17 + num_18 + num_19 + num_20 +

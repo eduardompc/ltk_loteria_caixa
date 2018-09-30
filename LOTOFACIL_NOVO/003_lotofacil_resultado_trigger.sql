@@ -204,20 +204,10 @@ create function lotofacil.fn_lotofacil_resultado_id(concurso_novo numeric, resul
 
     Insert into lotofacil.lotofacil_resultado_id (
       concurso,
-      ltf_id, par_impar_id, prm_id, ext_int_id, hrz_id,
-      vrt_id, dge_id, dgd_id, esq_dir_id,
-      sup_inf_id, sup_esq_inf_dir_id,
-      sup_dir_inf_esq_id,
-      crz_id, lsng_id, qnt_id, trng_id, trio_id,
-      x1_x2_id, dz_id, un_id, alg_id, sm_bolas_id, sm_alg_id, lc_id)
-
+      ltf_id, par_impar_id, prm_id, ext_int_id, hrz_id, vrt_id, dge_id, dgd_id, esq_dir_id, sup_inf_id, sup_esq_inf_dir_id, sup_dir_inf_esq_id, crz_id, lsng_id, qnt_id, trng_id, trio_id, x1_x2_id, dz_id, un_id, alg_id, sm_bolas_id, sm_alg_id, lc_id, bin_par_id, bin_impar_id, bin_primo_id, bin_nao_primo_id, bin_ext_id, bin_int_id, bin_hrz_1_id, bin_hrz_2_id, bin_hrz_3_id, bin_hrz_4_id, bin_hrz_5_id, bin_vrt_1_id, bin_vrt_2_id, bin_vrt_3_id, bin_vrt_4_id, bin_vrt_5_id, bin_dge_1_id, bin_dge_2_id, bin_dge_3_id, bin_dge_4_id, bin_dge_5_id, bin_dgd_1_id, bin_dgd_2_id, bin_dgd_3_id, bin_dgd_4_id, bin_dgd_5_id, bin_esq_id, bin_dir_id, bin_sup_id, bin_inf_id, bin_sup_esq_id, bin_inf_dir_id, bin_sup_dir_id, bin_inf_esq_id, bin_crz_1_id, bin_crz_2_id, bin_crz_3_id, bin_crz_4_id, bin_crz_5_id, bin_lsng_1_id, bin_lsng_2_id, bin_lsng_3_id, bin_lsng_4_id, bin_lsng_5_id, bin_qnt_1_id, bin_qnt_2_id, bin_qnt_3_id, bin_qnt_4_id, bin_qnt_5_id, bin_trng_1_id, bin_trng_2_id, bin_trng_3_id, bin_trng_4_id, bin_trio_1_id, bin_trio_2_id, bin_trio_3_id, bin_trio_4_id, bin_trio_5_id, bin_trio_6_id, bin_trio_7_id, bin_trio_8_id, bin_x1_id, bin_x2_id, bin_dz_0_id, bin_dz_1_id, bin_dz_2_id, bin_lc_1_id, bin_lc_2_id, bin_lc_3_id, bin_lc_4_id, bin_lc_5_id
+    )
       Select concurso_novo,
-        ltf_id, par_impar_id, prm_id, ext_int_id, hrz_id,
-      vrt_id, dge_id, dgd_id, esq_dir_id,
-      sup_inf_id, sup_esq_inf_dir_id,
-      sup_dir_inf_esq_id,
-      crz_id, lsng_id, qnt_id, trng_id, trio_id,
-      x1_x2_id, dz_id, un_id, alg_id, sm_bolas_id, sm_alg_id, lc_id
+        ltf_id, par_impar_id, prm_id, ext_int_id, hrz_id, vrt_id, dge_id, dgd_id, esq_dir_id, sup_inf_id, sup_esq_inf_dir_id, sup_dir_inf_esq_id, crz_id, lsng_id, qnt_id, trng_id, trio_id, x1_x2_id, dz_id, un_id, alg_id, sm_bolas_id, sm_alg_id, lc_id, bin_par_id, bin_impar_id, bin_primo_id, bin_nao_primo_id, bin_ext_id, bin_int_id, bin_hrz_1_id, bin_hrz_2_id, bin_hrz_3_id, bin_hrz_4_id, bin_hrz_5_id, bin_vrt_1_id, bin_vrt_2_id, bin_vrt_3_id, bin_vrt_4_id, bin_vrt_5_id, bin_dge_1_id, bin_dge_2_id, bin_dge_3_id, bin_dge_4_id, bin_dge_5_id, bin_dgd_1_id, bin_dgd_2_id, bin_dgd_3_id, bin_dgd_4_id, bin_dgd_5_id, bin_esq_id, bin_dir_id, bin_sup_id, bin_inf_id, bin_sup_esq_id, bin_inf_dir_id, bin_sup_dir_id, bin_inf_esq_id, bin_crz_1_id, bin_crz_2_id, bin_crz_3_id, bin_crz_4_id, bin_crz_5_id, bin_lsng_1_id, bin_lsng_2_id, bin_lsng_3_id, bin_lsng_4_id, bin_lsng_5_id, bin_qnt_1_id, bin_qnt_2_id, bin_qnt_3_id, bin_qnt_4_id, bin_qnt_5_id, bin_trng_1_id, bin_trng_2_id, bin_trng_3_id, bin_trng_4_id, bin_trio_1_id, bin_trio_2_id, bin_trio_3_id, bin_trio_4_id, bin_trio_5_id, bin_trio_6_id, bin_trio_7_id, bin_trio_8_id, bin_x1_id, bin_x2_id, bin_dz_0_id, bin_dz_1_id, bin_dz_2_id, bin_lc_1_id, bin_lc_2_id, bin_lc_3_id, bin_lc_4_id, bin_lc_5_id
         from lotofacil.lotofacil_id
           where ltf_id = ltf_id_concurso;
 

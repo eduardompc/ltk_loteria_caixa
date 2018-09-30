@@ -7,49 +7,49 @@
  */
 DROP TABLE IF EXISTS lotofacil.lotofacil_resultado_importacao;
 CREATE TABLE lotofacil.lotofacil_resultado_importacao (
-  concurso             NUMERIC NOT NULL,
-  data                 DATE,
+  concurso                 NUMERIC NOT NULL,
+  data                     DATE,
 
-  b_1                  NUMERIC DEFAULT NULL,
-  b_2                  NUMERIC DEFAULT NULL,
-  b_3                  NUMERIC DEFAULT NULL,
-  b_4                  NUMERIC DEFAULT NULL,
-  b_5                  NUMERIC DEFAULT NULL,
-  b_6                  NUMERIC DEFAULT NULL,
-  b_7                  NUMERIC DEFAULT NULL,
-  b_8                  NUMERIC DEFAULT NULL,
-  b_9                  NUMERIC DEFAULT NULL,
-  b_10                 NUMERIC DEFAULT NULL,
-  b_11                 NUMERIC DEFAULT NULL,
-  b_12                 NUMERIC DEFAULT NULL,
-  b_13                 NUMERIC DEFAULT NULL,
-  b_14                 NUMERIC DEFAULT NULL,
-  b_15                 NUMERIC DEFAULT NULL,
+  b_1                      NUMERIC DEFAULT NULL,
+  b_2                      NUMERIC DEFAULT NULL,
+  b_3                      NUMERIC DEFAULT NULL,
+  b_4                      NUMERIC DEFAULT NULL,
+  b_5                      NUMERIC DEFAULT NULL,
+  b_6                      NUMERIC DEFAULT NULL,
+  b_7                      NUMERIC DEFAULT NULL,
+  b_8                      NUMERIC DEFAULT NULL,
+  b_9                      NUMERIC DEFAULT NULL,
+  b_10                     NUMERIC DEFAULT NULL,
+  b_11                     NUMERIC DEFAULT NULL,
+  b_12                     NUMERIC DEFAULT NULL,
+  b_13                     NUMERIC DEFAULT NULL,
+  b_14                     NUMERIC DEFAULT NULL,
+  b_15                     NUMERIC DEFAULT NULL,
 
-  g_15_numeros         NUMERIC DEFAULT 0,
-  g_14_numeros         NUMERIC DEFAULT 0,
-  g_13_numeros         NUMERIC DEFAULT 0,
-  g_12_numeros         NUMERIC DEFAULT 0,
-  g_11_numeros         NUMERIC DEFAULT 0,
+  qt_ganhadores_15_numeros NUMERIC DEFAULT 0,
+  qt_ganhadores_14_numeros NUMERIC DEFAULT 0,
+  qt_ganhadores_13_numeros NUMERIC DEFAULT 0,
+  qt_ganhadores_12_numeros NUMERIC DEFAULT 0,
+  qt_ganhadores_11_numeros NUMERIC DEFAULT 0,
 
-  rateio_15_numeros    DECIMAL DEFAULT 0,
-  rateio_14_numeros    DECIMAL DEFAULT 0,
-  rateio_13_numeros    DECIMAL DEFAULT 0,
-  rateio_12_numeros    DECIMAL DEFAULT 0,
-  rateio_11_numeros    DECIMAL DEFAULT 0,
+  rateio_15_numeros        DECIMAL DEFAULT 0,
+  rateio_14_numeros        DECIMAL DEFAULT 0,
+  rateio_13_numeros        DECIMAL DEFAULT 0,
+  rateio_12_numeros        DECIMAL DEFAULT 0,
+  rateio_11_numeros        DECIMAL DEFAULT 0,
 
-  acumulado_15_numeros DECIMAL DEFAULT 0,
-  acumulado_14_numeros decimal default 0,
+  acumulado_15_numeros     DECIMAL DEFAULT 0,
+  acumulado_14_numeros     DECIMAL DEFAULT 0,
 
-  valor_arrecadado    DECIMAL DEFAULT 0,
-  valor_acumulado_especial  DECIMAL DEFAULT 0,
-  estimativa_premio    DECIMAL DEFAULT 0,
+  valor_arrecadado         DECIMAL DEFAULT 0,
+  valor_acumulado_especial DECIMAL DEFAULT 0,
+  estimativa_premio        DECIMAL DEFAULT 0,
 
-  concurso_especial boolean,
-  sorteio_acumulado boolean,
-  rateio_processamento boolean,
+  concurso_especial        BOOLEAN,
+  sorteio_acumulado        BOOLEAN,
+  rateio_processamento     BOOLEAN,
 
-  data_proximo_concurso DATE,
+  data_proximo_concurso    DATE,
 
   CONSTRAINT lotofacil_resultado_importacao_pk PRIMARY KEY (concurso),
   CONSTRAINT lotofacil_resultado_importacao_check CHECK (
@@ -125,5 +125,6 @@ CREATE VIEW lotofacil.v_lotofacil_resultado_importacao AS
 
 
   ORDER BY ltf_importado.concurso DESC;
+
 
 

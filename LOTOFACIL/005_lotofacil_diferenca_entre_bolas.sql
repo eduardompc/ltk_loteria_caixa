@@ -440,7 +440,7 @@ order by qt_vezes desc) res_qt
 order by res_qt desc;
 
 
-
+Select  from lotofacil.lotofacil_diferenca_entre_bolas;
 
 
 

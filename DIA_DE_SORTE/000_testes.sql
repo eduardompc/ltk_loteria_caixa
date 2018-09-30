@@ -131,25 +131,6 @@ ORDER BY d_sorte.d_sorte_combinacoes_em_grupos.id_sequencial;
 
 
 SELECT
-  d_sorte.d_sorte_bolas.b_1,
-  d_sorte.d_sorte_bolas.b_2,
-  d_sorte.d_sorte_bolas.b_3,
-  d_sorte.d_sorte_bolas.b_4,
-  d_sorte.d_sorte_bolas.b_5,
-  d_sorte.d_sorte_bolas.b_6,
-  d_sorte.d_sorte_bolas.b_7,
-  ,
-  d_sorte_id.*
-FROM d_sorte.d_sorte_bolas, d_sorte.d_sorte_id, d_sorte.d_sorte_combinacoes_em_grupo
-WHERE d_sorte.d_sorte_id.d_sorte_id = d_sorte.d_sorte_bolas.d_sorte_id
-      AND d_sorte.d_sorte_id.d_sorte_id = d_sorte.d_sorte_combinacoes_em_grupo.d_sorte_id
-      AND d_sorte.d_sorte_bolas.d_sorte_id = d_sorte.d_sorte_combinacoes_em_grupo.d_sorte_id
-      AND d_sorte.d_sorte_bolas.d_sorte_id = d_sorte.d_sorte_combinacoes_em_grupo.d_sorte_id
-
-ORDER BY d_sorte.d_sorte_combinacoes_em_grupo.id_sequencial;
-
-
-SELECT
   acertos,
   qt_vezes
 FROM d_sorte.v_d_sorte_filtros_acertos_por_data_hora
@@ -165,24 +146,6 @@ WHERE to_char(data, 'dd-MM-YYYY HH24:MI:SS.US')
       = '28-07-2018 23:07:42.634454'
 ORDER BY acertos ASC;
 
-
-SELECT
-  d_sorte.d_sorte_combinacoes_em_grupos.*,
-  d_sorte.d_sorte_bolas.b_1,
-  d_sorte.d_sorte_bolas.b_2,
-  d_sorte.d_sorte_bolas.b_3,
-  d_sorte.d_sorte_bolas.b_4,
-  d_sorte.d_sorte_bolas.b_5,
-  d_sorte.d_sorte_bolas.b_6,
-  d_sorte.d_sorte_bolas.b_7,
-  d_sorte_id.*
-FROM d_sorte.d_sorte_bolas, d_sorte.d_sorte_id, d_sorte.d_sorte_combinacoes_em_grupos
-WHERE d_sorte.d_sorte_id.d_sorte_id = d_sorte.d_sorte_bolas.d_sorte_id and
-  d_sorte.d_sorte_id.d_sorte_id =  d_sorte.d_sorte_combinacoes_em_grupos.d_sorte_id
-  and d_sorte.d_sorte_bolas.d_sorte_id = d_sorte.d_sorte_combinacoes_em_grupos.d_sorte_id
-  and d_sorte.d_sorte_bolas.d_sorte_id in (
-  395848, 2165408, 1703648, 1182267
-)
-ORDER BY id_grupo asc, id_seq_cmb_em_grupos;
-
-
+Select b_1,  b_7, count(*) as qt_vz from d_sorte.d_sorte_resultado_bolas
+group by b_1, b_7
+order by qt_vz desc;

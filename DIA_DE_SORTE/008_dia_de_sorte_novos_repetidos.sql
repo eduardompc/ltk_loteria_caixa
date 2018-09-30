@@ -699,4 +699,4 @@ Select from d_sorte.fn_d_sorte_resultado_novos_repetidos_2(48);
 
 
 SELECT
-FROM d_sorte.fn_d_sorte_novos_repetidos(48);
+FROM d_sorte.fn_d_sorte_novos_repetidos(49);

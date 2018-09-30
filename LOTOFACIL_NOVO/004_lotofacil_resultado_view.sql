@@ -2734,3 +2734,5 @@ CREATE VIEW lotofacil.v_lotofacil_num_nao_sorteado AS
   WHERE ltf_id NOT IN (SELECT ltf_id
                        FROM lotofacil.lotofacil_resultado_id);
 
+
+

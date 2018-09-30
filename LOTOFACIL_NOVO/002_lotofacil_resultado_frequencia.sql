@@ -45,6 +45,12 @@ CREATE TABLE lotofacil.lotofacil_resultado_num_frequencia (
   num_24   NUMERIC DEFAULT 0,
   num_25   NUMERIC DEFAULT 0,
 
+  soma_frequencia numeric default 0 check (soma_frequencia =  num_1 + num_2 + num_3 + num_4 + num_5 +
+                                          num_6 + num_7 + num_8 + num_9 + num_10 +
+                                          num_11 + num_12 + num_13 + num_14 + num_15 +
+                                          num_16 + num_17 + num_18 + num_19 + num_20 +
+                                          num_21 + num_22 + num_23 + num_24 + num_25),
+
   CONSTRAINT lotofacil_resultado_num_frequencia_pk PRIMARY KEY (concurso),
 
   CONSTRAINT lotofacil_resultado_num_frequencia_fk FOREIGN KEY (concurso) REFERENCES lotofacil.lotofacil_resultado_num (concurso)
@@ -54,6 +60,7 @@ COMMENT ON CONSTRAINT lotofacil_resultado_num_frequencia_fk
 ON lotofacil.lotofacil_resultado_num_frequencia IS
 'A tabela está com as clausulas on update cascade on delete cascade, pois, se for deletado '
 'algum registro da tabela lotofacil_resultado_num automaticamente, este será deletado.';
+
 
 /**
   Na tabela lotofacil_resultado_num_frequencia acima, a cada concurso sorteado,
@@ -333,6 +340,8 @@ DECLARE
 
   qt_de_repetindo_pra_deixou               NUMERIC;
   qt_de_repetindo_pra_repetindo            NUMERIC;
+
+  sm_frequencia numeric;    --Soma de frequencias.
 
 BEGIN
   -- Deleta todas as tabelas referente a novos, repetidos, ainda nao saiu, deixou de sair.
@@ -632,6 +641,7 @@ BEGIN
     qt_de_repetindo_pra_repetindo := 0;
 
 
+    sm_frequencia := 0;
     uA := 1;
     WHILE uA <= 25 LOOP
       /*
@@ -820,6 +830,9 @@ BEGIN
 
       END IF;
 
+      -- Soma a frequência de todos os campos de um registro.
+      sm_frequencia := sm_frequencia + lotofacil_resultado_num_frequencia[uA];
+
       -- Soma a frequencia atual, com a soma total de todas as frequências já
       -- encontradas.
       lotofacil_resultado_num_frequencia_total [uA] := lotofacil_resultado_num_frequencia_total [uA] +
@@ -875,7 +888,7 @@ BEGIN
       num_6, num_7, num_8, num_9, num_10,
       num_11, num_12, num_13, num_14, num_15,
       num_16, num_17, num_18, num_19, num_20,
-      num_21, num_22, num_23, num_24, num_25)
+      num_21, num_22, num_23, num_24, num_25, soma_frequencia)
     VALUES (reg_lotofacil_resultado_num.concurso,
       lotofacil_resultado_num_frequencia [1],
       lotofacil_resultado_num_frequencia [2],
@@ -901,7 +914,8 @@ BEGIN
             lotofacil_resultado_num_frequencia [22],
             lotofacil_resultado_num_frequencia [23],
             lotofacil_resultado_num_frequencia [24],
-            lotofacil_resultado_num_frequencia [25]);
+            lotofacil_resultado_num_frequencia [25],
+    sm_frequencia);
 
     INSERT INTO lotofacil.lotofacil_resultado_num_frequencia_total (
       concurso, num_1, num_2, num_3, num_4, num_5,
@@ -1098,3 +1112,5 @@ BEGIN
 END $$;
 
 SELECT lotofacil.fn_lotofacil_resultado_frequencia_atualizar();
+
+

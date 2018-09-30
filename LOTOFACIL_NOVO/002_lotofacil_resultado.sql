@@ -272,6 +272,105 @@ CREATE TABLE lotofacil.lotofacil_resultado_id (
 
   lc_id integer not null,
 
+  -- Há 4096 combinações de 0 e 1, usando 12 posições.
+  bin_par_id integer default 0 check (bin_par_id between 0 and 4095),
+
+  -- Há 8196 combinações de 0 e 1, usando 13 posições.
+  bin_impar_id integer default 0 check (bin_impar_id between 0 and 8195),
+
+  -- Há 512 combinações de 0 e 1, usando 9 posições.
+  bin_primo_id smallint default 0 check (bin_primo_id between 0 and 511),
+
+  -- Há 65536 combinações de 0 e 1, usando 16 posições.
+  bin_externo_id integer default 0 check (bin_externo_id between 0 and 65535),
+
+  -- Há 512 combinações de 0 e 1, usando 9 posições.
+  bin_interno_id integer default 0 check (bin_interno_id between 0 and 511),
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_hrz_1_id smallint default 0 check (bin_hrz_1_id between 0 and 31),
+  bin_hrz_2_id smallint default 0 check (bin_hrz_2_id between 0 and 31),
+  bin_hrz_3_id smallint default 0 check (bin_hrz_3_id between 0 and 31),
+  bin_hrz_4_id smallint default 0 check (bin_hrz_4_id between 0 and 31),
+  bin_hrz_5_id smallint default 0 check (bin_hrz_5_id between 0 and 31),
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_vrt_1_id smallint default 0 check (bin_vrt_1_id between 0 and 31),
+  bin_vrt_2_id smallint default 0 check (bin_vrt_2_id between 0 and 31),
+  bin_vrt_3_id smallint default 0 check (bin_vrt_3_id between 0 and 31),
+  bin_vrt_4_id smallint default 0 check (bin_vrt_4_id between 0 and 31),
+  bin_vrt_5_id smallint default 0 check (bin_vrt_5_id between 0 and 31),
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_dge_1_id smallint default 0 check (bin_dge_1_id between 0 and 31),
+  bin_dge_2_id smallint default 0 check (bin_dge_2_id between 0 and 31),
+  bin_dge_3_id smallint default 0 check (bin_dge_3_id between 0 and 31),
+  bin_dge_4_id smallint default 0 check (bin_dge_4_id between 0 and 31),
+  bin_dge_5_id smallint default 0 check (bin_dge_5_id between 0 and 31),
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_dgd_1_id smallint default 0 check (bin_dgd_1_id between 0 and 31),
+  bin_dgd_2_id smallint default 0 check (bin_dgd_2_id between 0 and 31),
+  bin_dgd_3_id smallint default 0 check (bin_dgd_3_id between 0 and 31),
+  bin_dgd_4_id smallint default 0 check (bin_dgd_4_id between 0 and 31),
+  bin_dgd_5_id smallint default 0 check (bin_dgd_5_id between 0 and 31),
+
+  bin_esq_id integer DEFAULT 0 NULL,
+  bin_dir_id integer DEFAULT 0 NULL,
+
+  bin_sup_id integer DEFAULT 0 NULL,
+  bin_inf_id integer DEFAULT 0 NULL,
+
+  bin_sup_esq_id integer DEFAULT 0 NULL,
+  bin_inf_dir_id integer DEFAULT 0 NULL,
+
+  bin_sup_dir_id integer DEFAULT 0 NULL,
+  bin_inf_esq_id integer DEFAULT 0 NULL,
+
+  bin_crz_1_id SMALLINT DEFAULT 0 NULL,
+  bin_crz_2_id SMALLINT DEFAULT 0 NULL,
+  bin_crz_3_id SMALLINT DEFAULT 0 NULL,
+  bin_crz_4_id SMALLINT DEFAULT 0 NULL,
+  bin_crz_5_id SMALLINT DEFAULT 0 NULL,
+
+  bin_lsng_1_id SMALLINT DEFAULT 0 NULL,
+  bin_lsng_2_id SMALLINT DEFAULT 0 NULL,
+  bin_lsng_3_id SMALLINT DEFAULT 0 NULL,
+  bin_lsng_4_id SMALLINT DEFAULT 0 NULL,
+  bin_lsng_5_id SMALLINT DEFAULT 0 NULL,
+
+  bin_qnt_1_id SMALLINT DEFAULT 0 NULL,
+  bin_qnt_2_id SMALLINT DEFAULT 0 NULL,
+  bin_qnt_3_id SMALLINT DEFAULT 0 NULL,
+  bin_qnt_4_id SMALLINT DEFAULT 0 NULL,
+  bin_qnt_5_id SMALLINT DEFAULT 0 NULL,
+
+  bin_trng_1_id SMALLINT DEFAULT 0 NULL,
+  bin_trng_2_id SMALLINT DEFAULT 0 NULL,
+  bin_trng_3_id SMALLINT DEFAULT 0 NULL,
+  bin_trng_4_id SMALLINT DEFAULT 0 NULL,
+
+  bin_trio_1_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_2_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_3_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_4_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_5_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_6_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_7_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_8_id SMALLINT DEFAULT 0 NULL,
+
+  bin_x1_id SMALLINT DEFAULT 0 NULL,
+  bin_x2_id integer DEFAULT 0 NULL,
+
+  bin_dz_0_id SMALLINT DEFAULT 0 NULL,
+  bin_dz_1_id SMALLINT DEFAULT 0 NULL,
+  bin_dz_2_id SMALLINT DEFAULT 0 NULL,
+
+  bin_lc_1_id SMALLINT DEFAULT 0 NULL,
+  bin_lc_2_id SMALLINT DEFAULT 0 NULL,
+  bin_lc_3_id SMALLINT DEFAULT 0 NULL,
+  bin_lc_4_id SMALLINT DEFAULT 0 NULL,
+  bin_lc_5_id SMALLINT DEFAULT 0 NULL,  
 
   CONSTRAINT lotofacil_resultado_id_fk_1 FOREIGN KEY (ltf_id) references lotofacil.lotofacil_num(ltf_id) on update cascade on delete cascade,
 
@@ -310,83 +409,289 @@ CREATE TABLE lotofacil.lotofacil_resultado_id (
 
 );
 
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_1;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_2;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_3;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_4;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_5;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_6;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_7;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_8;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_9;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_10;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_par_id INTEGER DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_impar_id INTEGER DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_primo_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_nao_primo_id INTEGER DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_ext_id INTEGER DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_int_id SMALLINT DEFAULT 0 NULL;
 
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_11;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_12;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_13;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_14;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_15;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_16;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_17;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_18;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_19;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_hrz_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_hrz_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_hrz_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_hrz_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_hrz_5_id SMALLINT DEFAULT 0 NULL;
 
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_21;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_22;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_23;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_24;
-DROP INDEX IF EXISTS lotofacil_resultado_id_idx_25;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_vrt_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_vrt_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_vrt_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_vrt_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_vrt_5_id SMALLINT DEFAULT 0 NULL;
 
-CREATE INDEX lotofacil_resultado_id_idx_1
-  ON lotofacil.lotofacil_resultado_id (ltf_id);
-CREATE INDEX lotofacil_resultado_id_idx_2
-  ON lotofacil.lotofacil_resultado_id (concurso);
-CREATE INDEX lotofacil_resultado_id_idx_3
-  ON lotofacil.lotofacil_resultado_id (par_impar_id);
-CREATE INDEX lotofacil_resultado_id_idx_4
-  ON lotofacil.lotofacil_resultado_id (prm_id);
-CREATE INDEX lotofacil_resultado_id_idx_5
-  ON lotofacil.lotofacil_resultado_id (ext_int_id);
-CREATE INDEX lotofacil_resultado_id_idx_6
-  ON lotofacil.lotofacil_resultado_id (hrz_id);
-CREATE INDEX lotofacil_resultado_id_idx_7
-  ON lotofacil.lotofacil_resultado_id (vrt_id);
-CREATE INDEX lotofacil_resultado_id_idx_8
-  ON lotofacil.lotofacil_resultado_id (dge_id);
-CREATE INDEX lotofacil_resultado_id_idx_9
-  ON lotofacil.lotofacil_resultado_id (dgd_id);
-CREATE INDEX lotofacil_resultado_id_idx_10
-  ON lotofacil.lotofacil_resultado_id (esq_dir_id);
-CREATE INDEX lotofacil_resultado_id_idx_11
-  ON lotofacil.lotofacil_resultado_id (sup_inf_id);
-CREATE INDEX lotofacil_resultado_id_idx_12
-  ON lotofacil.lotofacil_resultado_id (sup_esq_inf_dir_id);
-CREATE INDEX lotofacil_resultado_id_idx_13
-  ON lotofacil.lotofacil_resultado_id (sup_dir_inf_esq_id);
-CREATE INDEX lotofacil_resultado_id_idx_14
-  ON lotofacil.lotofacil_resultado_id (crz_id);
-CREATE INDEX lotofacil_resultado_id_idx_15
-  ON lotofacil.lotofacil_resultado_id (lsng_id);
-CREATE INDEX lotofacil_resultado_id_idx_16
-  ON lotofacil.lotofacil_resultado_id (qnt_id);
-CREATE INDEX lotofacil_resultado_id_idx_17
-  ON lotofacil.lotofacil_resultado_id (trng_id);
-CREATE INDEX lotofacil_resultado_id_idx_18
-  ON lotofacil.lotofacil_resultado_id (trio_id);
-CREATE INDEX lotofacil_resultado_id_idx_19
-  ON lotofacil.lotofacil_resultado_id (x1_x2_id);
-CREATE INDEX lotofacil_resultado_id_idx_20
-  ON lotofacil.lotofacil_resultado_id (dz_id);
-CREATE INDEX lotofacil_resultado_id_idx_21
-  ON lotofacil.lotofacil_resultado_id (un_id);
-CREATE INDEX lotofacil_resultado_id_idx_22
-  ON lotofacil.lotofacil_resultado_id (alg_id);
-CREATE INDEX lotofacil_resultado_id_idx_23
-  ON lotofacil.lotofacil_resultado_id (sm_bolas_id);
-CREATE INDEX lotofacil_resultado_id_idx_24
-  ON lotofacil.lotofacil_resultado_id (sm_alg_id);
-CREATE INDEX lotofacil_resultado_id_idx_25
-  ON lotofacil.lotofacil_resultado_id (lc_id);
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dge_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dge_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dge_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dge_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dge_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dgd_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dgd_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dgd_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dgd_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dgd_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_esq_id integer DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dir_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_sup_id integer DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_inf_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_sup_esq_id integer DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_inf_dir_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_sup_dir_id integer DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_inf_esq_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_crz_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_crz_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_crz_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_crz_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_crz_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lsng_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lsng_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lsng_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lsng_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lsng_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_qnt_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_qnt_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_qnt_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_qnt_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_qnt_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trng_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trng_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trng_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trng_4_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trio_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trio_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trio_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trio_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trio_5_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trio_6_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trio_7_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_trio_8_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_x1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_x2_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dz_0_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dz_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_dz_2_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lc_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lc_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lc_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lc_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_resultado_id ADD bin_lc_5_id SMALLINT DEFAULT 0 NULL;
+
+DROP INDEX IF EXISTS lotofacil_idx_1;
+DROP INDEX IF EXISTS lotofacil_idx_2;
+DROP INDEX IF EXISTS lotofacil_idx_3;
+DROP INDEX IF EXISTS lotofacil_idx_4;
+DROP INDEX IF EXISTS lotofacil_idx_5;
+DROP INDEX IF EXISTS lotofacil_idx_6;
+DROP INDEX IF EXISTS lotofacil_idx_7;
+DROP INDEX IF EXISTS lotofacil_idx_8;
+DROP INDEX IF EXISTS lotofacil_idx_9;
+DROP INDEX IF EXISTS lotofacil_idx_10;
+DROP INDEX IF EXISTS lotofacil_idx_11;
+DROP INDEX IF EXISTS lotofacil_idx_12;
+DROP INDEX IF EXISTS lotofacil_idx_13;
+DROP INDEX IF EXISTS lotofacil_idx_14;
+DROP INDEX IF EXISTS lotofacil_idx_15;
+DROP INDEX IF EXISTS lotofacil_idx_16;
+DROP INDEX IF EXISTS lotofacil_idx_17;
+DROP INDEX IF EXISTS lotofacil_idx_18;
+DROP INDEX IF EXISTS lotofacil_idx_19;
+DROP INDEX IF EXISTS lotofacil_idx_20;
+DROP INDEX IF EXISTS lotofacil_idx_21;
+DROP INDEX IF EXISTS lotofacil_idx_22;
+DROP INDEX IF EXISTS lotofacil_idx_23;
+DROP INDEX IF EXISTS lotofacil_idx_24;
+DROP INDEX IF EXISTS lotofacil_idx_25;
+DROP INDEX IF EXISTS lotofacil_idx_26;
+DROP INDEX IF EXISTS lotofacil_idx_27;
+DROP INDEX IF EXISTS lotofacil_idx_28;
+DROP INDEX IF EXISTS lotofacil_idx_29;
+DROP INDEX IF EXISTS lotofacil_idx_30;
+DROP INDEX IF EXISTS lotofacil_idx_31;
+DROP INDEX IF EXISTS lotofacil_idx_32;
+DROP INDEX IF EXISTS lotofacil_idx_33;
+DROP INDEX IF EXISTS lotofacil_idx_34;
+DROP INDEX IF EXISTS lotofacil_idx_35;
+DROP INDEX IF EXISTS lotofacil_idx_36;
+DROP INDEX IF EXISTS lotofacil_idx_37;
+DROP INDEX IF EXISTS lotofacil_idx_38;
+DROP INDEX IF EXISTS lotofacil_idx_39;
+DROP INDEX IF EXISTS lotofacil_idx_40;
+DROP INDEX IF EXISTS lotofacil_idx_41;
+DROP INDEX IF EXISTS lotofacil_idx_42;
+DROP INDEX IF EXISTS lotofacil_idx_43;
+DROP INDEX IF EXISTS lotofacil_idx_44;
+DROP INDEX IF EXISTS lotofacil_idx_45;
+DROP INDEX IF EXISTS lotofacil_idx_46;
+DROP INDEX IF EXISTS lotofacil_idx_47;
+DROP INDEX IF EXISTS lotofacil_idx_48;
+DROP INDEX IF EXISTS lotofacil_idx_49;
+DROP INDEX IF EXISTS lotofacil_idx_50;
+DROP INDEX IF EXISTS lotofacil_idx_51;
+DROP INDEX IF EXISTS lotofacil_idx_52;
+DROP INDEX IF EXISTS lotofacil_idx_53;
+DROP INDEX IF EXISTS lotofacil_idx_54;
+DROP INDEX IF EXISTS lotofacil_idx_55;
+DROP INDEX IF EXISTS lotofacil_idx_56;
+DROP INDEX IF EXISTS lotofacil_idx_57;
+DROP INDEX IF EXISTS lotofacil_idx_58;
+DROP INDEX IF EXISTS lotofacil_idx_59;
+DROP INDEX IF EXISTS lotofacil_idx_60;
+DROP INDEX IF EXISTS lotofacil_idx_61;
+DROP INDEX IF EXISTS lotofacil_idx_62;
+DROP INDEX IF EXISTS lotofacil_idx_63;
+DROP INDEX IF EXISTS lotofacil_idx_64;
+DROP INDEX IF EXISTS lotofacil_idx_65;
+DROP INDEX IF EXISTS lotofacil_idx_66;
+DROP INDEX IF EXISTS lotofacil_idx_67;
+DROP INDEX IF EXISTS lotofacil_idx_68;
+DROP INDEX IF EXISTS lotofacil_idx_69;
+DROP INDEX IF EXISTS lotofacil_idx_70;
+DROP INDEX IF EXISTS lotofacil_idx_71;
+DROP INDEX IF EXISTS lotofacil_idx_72;
+DROP INDEX IF EXISTS lotofacil_idx_73;
+DROP INDEX IF EXISTS lotofacil_idx_74;
+DROP INDEX IF EXISTS lotofacil_idx_75;
+DROP INDEX IF EXISTS lotofacil_idx_76;
+DROP INDEX IF EXISTS lotofacil_idx_77;
+DROP INDEX IF EXISTS lotofacil_idx_78;
+DROP INDEX IF EXISTS lotofacil_idx_79;
+DROP INDEX IF EXISTS lotofacil_idx_80;
+DROP INDEX IF EXISTS lotofacil_idx_81;
+DROP INDEX IF EXISTS lotofacil_idx_82;
+DROP INDEX IF EXISTS lotofacil_idx_83;
+DROP INDEX IF EXISTS lotofacil_idx_84;
+DROP INDEX IF EXISTS lotofacil_idx_85;
+DROP INDEX IF EXISTS lotofacil_idx_86;
+DROP INDEX IF EXISTS lotofacil_idx_87;
+DROP INDEX IF EXISTS lotofacil_idx_88;
+DROP INDEX IF EXISTS lotofacil_idx_89;
+DROP INDEX IF EXISTS lotofacil_idx_90;
+DROP INDEX IF EXISTS lotofacil_idx_91;
+DROP INDEX IF EXISTS lotofacil_idx_92;
+DROP INDEX IF EXISTS lotofacil_idx_93;
+DROP INDEX IF EXISTS lotofacil_idx_94;
+DROP INDEX IF EXISTS lotofacil_idx_95;
+DROP INDEX IF EXISTS lotofacil_idx_96;
+
+CREATE INDEX lotofacil_idx_1 ON lotofacil.lotofacil_id(ltf_id);
+CREATE INDEX lotofacil_idx_2 ON lotofacil.lotofacil_id(ltf_qt);
+CREATE INDEX lotofacil_idx_3 ON lotofacil.lotofacil_id(par_impar_id);
+CREATE INDEX lotofacil_idx_4 ON lotofacil.lotofacil_id(prm_id);
+CREATE INDEX lotofacil_idx_5 ON lotofacil.lotofacil_id(ext_int_id);
+CREATE INDEX lotofacil_idx_6 ON lotofacil.lotofacil_id(hrz_id);
+CREATE INDEX lotofacil_idx_7 ON lotofacil.lotofacil_id(vrt_id);
+CREATE INDEX lotofacil_idx_8 ON lotofacil.lotofacil_id(dge_id);
+CREATE INDEX lotofacil_idx_9 ON lotofacil.lotofacil_id(dgd_id);
+CREATE INDEX lotofacil_idx_10 ON lotofacil.lotofacil_id(esq_dir_id);
+CREATE INDEX lotofacil_idx_11 ON lotofacil.lotofacil_id(sup_inf_id);
+CREATE INDEX lotofacil_idx_12 ON lotofacil.lotofacil_id(sup_esq_inf_dir_id);
+CREATE INDEX lotofacil_idx_13 ON lotofacil.lotofacil_id(sup_dir_inf_esq_id);
+CREATE INDEX lotofacil_idx_14 ON lotofacil.lotofacil_id(crz_id);
+CREATE INDEX lotofacil_idx_15 ON lotofacil.lotofacil_id(lsng_id);
+CREATE INDEX lotofacil_idx_16 ON lotofacil.lotofacil_id(qnt_id);
+CREATE INDEX lotofacil_idx_17 ON lotofacil.lotofacil_id(trng_id);
+CREATE INDEX lotofacil_idx_18 ON lotofacil.lotofacil_id(trio_id);
+CREATE INDEX lotofacil_idx_19 ON lotofacil.lotofacil_id(x1_x2_id);
+CREATE INDEX lotofacil_idx_20 ON lotofacil.lotofacil_id(dz_id);
+CREATE INDEX lotofacil_idx_21 ON lotofacil.lotofacil_id(un_id);
+CREATE INDEX lotofacil_idx_22 ON lotofacil.lotofacil_id(alg_id);
+CREATE INDEX lotofacil_idx_23 ON lotofacil.lotofacil_id(sm_bolas_id);
+CREATE INDEX lotofacil_idx_24 ON lotofacil.lotofacil_id(sm_alg_id);
+CREATE INDEX lotofacil_idx_25 ON lotofacil.lotofacil_id(lc_id);
+CREATE INDEX lotofacil_idx_26 ON lotofacil.lotofacil_id(bin_par_id);
+CREATE INDEX lotofacil_idx_27 ON lotofacil.lotofacil_id(bin_impar_id);
+CREATE INDEX lotofacil_idx_28 ON lotofacil.lotofacil_id(bin_primo_id);
+CREATE INDEX lotofacil_idx_29 ON lotofacil.lotofacil_id(bin_nao_primo_id);
+CREATE INDEX lotofacil_idx_30 ON lotofacil.lotofacil_id(bin_ext_id);
+CREATE INDEX lotofacil_idx_31 ON lotofacil.lotofacil_id(bin_int_id);
+CREATE INDEX lotofacil_idx_32 ON lotofacil.lotofacil_id(bin_hrz_1_id);
+CREATE INDEX lotofacil_idx_33 ON lotofacil.lotofacil_id(bin_hrz_2_id);
+CREATE INDEX lotofacil_idx_34 ON lotofacil.lotofacil_id(bin_hrz_3_id);
+CREATE INDEX lotofacil_idx_35 ON lotofacil.lotofacil_id(bin_hrz_4_id);
+CREATE INDEX lotofacil_idx_36 ON lotofacil.lotofacil_id(bin_hrz_5_id);
+CREATE INDEX lotofacil_idx_37 ON lotofacil.lotofacil_id(bin_vrt_1_id);
+CREATE INDEX lotofacil_idx_38 ON lotofacil.lotofacil_id(bin_vrt_2_id);
+CREATE INDEX lotofacil_idx_39 ON lotofacil.lotofacil_id(bin_vrt_3_id);
+CREATE INDEX lotofacil_idx_40 ON lotofacil.lotofacil_id(bin_vrt_4_id);
+CREATE INDEX lotofacil_idx_41 ON lotofacil.lotofacil_id(bin_vrt_5_id);
+CREATE INDEX lotofacil_idx_42 ON lotofacil.lotofacil_id(bin_dge_1_id);
+CREATE INDEX lotofacil_idx_43 ON lotofacil.lotofacil_id(bin_dge_2_id);
+CREATE INDEX lotofacil_idx_44 ON lotofacil.lotofacil_id(bin_dge_3_id);
+CREATE INDEX lotofacil_idx_45 ON lotofacil.lotofacil_id(bin_dge_4_id);
+CREATE INDEX lotofacil_idx_46 ON lotofacil.lotofacil_id(bin_dge_5_id);
+CREATE INDEX lotofacil_idx_47 ON lotofacil.lotofacil_id(bin_dgd_1_id);
+CREATE INDEX lotofacil_idx_48 ON lotofacil.lotofacil_id(bin_dgd_2_id);
+CREATE INDEX lotofacil_idx_49 ON lotofacil.lotofacil_id(bin_dgd_3_id);
+CREATE INDEX lotofacil_idx_50 ON lotofacil.lotofacil_id(bin_dgd_4_id);
+CREATE INDEX lotofacil_idx_51 ON lotofacil.lotofacil_id(bin_dgd_5_id);
+CREATE INDEX lotofacil_idx_52 ON lotofacil.lotofacil_id(bin_esq_id);
+CREATE INDEX lotofacil_idx_53 ON lotofacil.lotofacil_id(bin_dir_id);
+CREATE INDEX lotofacil_idx_54 ON lotofacil.lotofacil_id(bin_sup_id);
+CREATE INDEX lotofacil_idx_55 ON lotofacil.lotofacil_id(bin_inf_id);
+CREATE INDEX lotofacil_idx_56 ON lotofacil.lotofacil_id(bin_sup_esq_id);
+CREATE INDEX lotofacil_idx_57 ON lotofacil.lotofacil_id(bin_inf_dir_id);
+CREATE INDEX lotofacil_idx_58 ON lotofacil.lotofacil_id(bin_sup_dir_id);
+CREATE INDEX lotofacil_idx_59 ON lotofacil.lotofacil_id(bin_inf_esq_id);
+CREATE INDEX lotofacil_idx_60 ON lotofacil.lotofacil_id(bin_crz_1_id);
+CREATE INDEX lotofacil_idx_61 ON lotofacil.lotofacil_id(bin_crz_2_id);
+CREATE INDEX lotofacil_idx_62 ON lotofacil.lotofacil_id(bin_crz_3_id);
+CREATE INDEX lotofacil_idx_63 ON lotofacil.lotofacil_id(bin_crz_4_id);
+CREATE INDEX lotofacil_idx_64 ON lotofacil.lotofacil_id(bin_crz_5_id);
+CREATE INDEX lotofacil_idx_65 ON lotofacil.lotofacil_id(bin_lsng_1_id);
+CREATE INDEX lotofacil_idx_66 ON lotofacil.lotofacil_id(bin_lsng_2_id);
+CREATE INDEX lotofacil_idx_67 ON lotofacil.lotofacil_id(bin_lsng_3_id);
+CREATE INDEX lotofacil_idx_68 ON lotofacil.lotofacil_id(bin_lsng_4_id);
+CREATE INDEX lotofacil_idx_69 ON lotofacil.lotofacil_id(bin_lsng_5_id);
+CREATE INDEX lotofacil_idx_70 ON lotofacil.lotofacil_id(bin_qnt_1_id);
+CREATE INDEX lotofacil_idx_71 ON lotofacil.lotofacil_id(bin_qnt_2_id);
+CREATE INDEX lotofacil_idx_72 ON lotofacil.lotofacil_id(bin_qnt_3_id);
+CREATE INDEX lotofacil_idx_73 ON lotofacil.lotofacil_id(bin_qnt_4_id);
+CREATE INDEX lotofacil_idx_74 ON lotofacil.lotofacil_id(bin_qnt_5_id);
+CREATE INDEX lotofacil_idx_75 ON lotofacil.lotofacil_id(bin_trng_1_id);
+CREATE INDEX lotofacil_idx_76 ON lotofacil.lotofacil_id(bin_trng_2_id);
+CREATE INDEX lotofacil_idx_77 ON lotofacil.lotofacil_id(bin_trng_3_id);
+CREATE INDEX lotofacil_idx_78 ON lotofacil.lotofacil_id(bin_trng_4_id);
+CREATE INDEX lotofacil_idx_79 ON lotofacil.lotofacil_id(bin_trio_1_id);
+CREATE INDEX lotofacil_idx_80 ON lotofacil.lotofacil_id(bin_trio_2_id);
+CREATE INDEX lotofacil_idx_81 ON lotofacil.lotofacil_id(bin_trio_3_id);
+CREATE INDEX lotofacil_idx_82 ON lotofacil.lotofacil_id(bin_trio_4_id);
+CREATE INDEX lotofacil_idx_83 ON lotofacil.lotofacil_id(bin_trio_5_id);
+CREATE INDEX lotofacil_idx_84 ON lotofacil.lotofacil_id(bin_trio_6_id);
+CREATE INDEX lotofacil_idx_85 ON lotofacil.lotofacil_id(bin_trio_7_id);
+CREATE INDEX lotofacil_idx_86 ON lotofacil.lotofacil_id(bin_trio_8_id);
+CREATE INDEX lotofacil_idx_87 ON lotofacil.lotofacil_id(bin_x1_id);
+CREATE INDEX lotofacil_idx_88 ON lotofacil.lotofacil_id(bin_x2_id);
+CREATE INDEX lotofacil_idx_89 ON lotofacil.lotofacil_id(bin_dz_0_id);
+CREATE INDEX lotofacil_idx_90 ON lotofacil.lotofacil_id(bin_dz_1_id);
+CREATE INDEX lotofacil_idx_91 ON lotofacil.lotofacil_id(bin_dz_2_id);
+CREATE INDEX lotofacil_idx_92 ON lotofacil.lotofacil_id(bin_lc_1_id);
+CREATE INDEX lotofacil_idx_93 ON lotofacil.lotofacil_id(bin_lc_2_id);
+CREATE INDEX lotofacil_idx_94 ON lotofacil.lotofacil_id(bin_lc_3_id);
+CREATE INDEX lotofacil_idx_95 ON lotofacil.lotofacil_id(bin_lc_4_id);
+CREATE INDEX lotofacil_idx_96 ON lotofacil.lotofacil_id(bin_lc_5_id);
+
+
 
 
 /**

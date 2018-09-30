@@ -672,6 +672,134 @@ create table lotofacil.lotofacil_id(
 
   lc_id integer not null,
 
+
+  /**
+    Nos campos, com o prefixo 'hex_', são identificadores de 0 a 15,
+    ou seja, 16 números, como funciona:
+    Iremos dividir 25 bolas em grupos de 5 bola, em horizontal e vertical.
+    Na horizontal, e na vertical, já temos estatísticas de quais combinações
+    mais sae, entretanto, não sabemos identificar quais bolas desta combinação
+    sai, estes campos tem o objetivo de identificar quais as combinações
+    de 1, 2 até 5 bolas que mais sai, assim, fica mais fácil selecionar as melhores
+    combinações, funcionará assim:
+
+    Da esquerda pra direita, iremos atribuir 1, se a bola saiu, zero, caso contrário,
+    Vamos supor que na horizontal 1, saiu as bolas:
+    1, 4, 5, então, iremos mapear assim: 1,0,0,1,1, observe que
+    nas posições 2 e 3 indica zero pois não saiu, observe que
+
+
+   */
+  -- Há 4096 combinações de 0 e 1, usando 12 posições.
+  bin_par_id integer default 0 check (bin_par_id between 0 and 4095),
+
+  -- Há 8196 combinações de 0 e 1, usando 13 posições.
+  bin_impar_id integer default 0 check (bin_impar_id between 0 and 8195),
+
+  -- Há 512 combinações de 0 e 1, usando 9 posições.
+  bin_primo_id smallint default 0 check (bin_primo_id between 0 and 511),
+
+  -- Há 65536 combinações de 0 e 1, usando 16 posições.
+  bin_externo_id integer default 0 check (bin_externo_id between 0 and 65535),
+
+  -- Há 512 combinações de 0 e 1, usando 9 posições.
+  bin_interno_id integer default 0 check (bin_interno_id between 0 and 511),
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_hrz_1_id smallint default 0 check (bin_hrz_1_id between 0 and 31),
+  bin_hrz_2_id smallint default 0 check (bin_hrz_2_id between 0 and 31),
+  bin_hrz_3_id smallint default 0 check (bin_hrz_3_id between 0 and 31),
+  bin_hrz_4_id smallint default 0 check (bin_hrz_4_id between 0 and 31),
+  bin_hrz_5_id smallint default 0 check (bin_hrz_5_id between 0 and 31),
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_vrt_1_id smallint default 0 check (bin_vrt_1_id between 0 and 31),
+  bin_vrt_2_id smallint default 0 check (bin_vrt_2_id between 0 and 31),
+  bin_vrt_3_id smallint default 0 check (bin_vrt_3_id between 0 and 31),
+  bin_vrt_4_id smallint default 0 check (bin_vrt_4_id between 0 and 31),
+  bin_vrt_5_id smallint default 0 check (bin_vrt_5_id between 0 and 31),
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_dge_1_id smallint default 0 check (bin_dge_1_id between 0 and 31),
+  bin_dge_2_id smallint default 0 check (bin_dge_2_id between 0 and 31),
+  bin_dge_3_id smallint default 0 check (bin_dge_3_id between 0 and 31),
+  bin_dge_4_id smallint default 0 check (bin_dge_4_id between 0 and 31),
+  bin_dge_5_id smallint default 0 check (bin_dge_5_id between 0 and 31),
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_dgd_1_id smallint default 0 check (bin_dgd_1_id between 0 and 31),
+  bin_dgd_2_id smallint default 0 check (bin_dgd_2_id between 0 and 31),
+  bin_dgd_3_id smallint default 0 check (bin_dgd_3_id between 0 and 31),
+  bin_dgd_4_id smallint default 0 check (bin_dgd_4_id between 0 and 31),
+  bin_dgd_5_id smallint default 0 check (bin_dgd_5_id between 0 and 31),
+
+  bin_esq_id integer DEFAULT 0 NULL,
+  bin_dir_id integer DEFAULT 0 NULL,
+
+  bin_sup_id integer DEFAULT 0 NULL,
+  bin_inf_id integer DEFAULT 0 NULL,
+
+  bin_sup_esq_id integer DEFAULT 0 NULL,
+  bin_inf_dir_id integer DEFAULT 0 NULL,
+
+  bin_sup_dir_id integer DEFAULT 0 NULL,
+  bin_inf_esq_id integer DEFAULT 0 NULL,
+
+  bin_crz_1_id SMALLINT DEFAULT 0 NULL,
+  bin_crz_2_id SMALLINT DEFAULT 0 NULL,
+  bin_crz_3_id SMALLINT DEFAULT 0 NULL,
+  bin_crz_4_id SMALLINT DEFAULT 0 NULL,
+  bin_crz_5_id SMALLINT DEFAULT 0 NULL,
+
+  bin_lsng_1_id SMALLINT DEFAULT 0 NULL,
+  bin_lsng_2_id SMALLINT DEFAULT 0 NULL,
+  bin_lsng_3_id SMALLINT DEFAULT 0 NULL,
+  bin_lsng_4_id SMALLINT DEFAULT 0 NULL,
+  bin_lsng_5_id SMALLINT DEFAULT 0 NULL,
+
+  bin_qnt_1_id SMALLINT DEFAULT 0 NULL,
+  bin_qnt_2_id SMALLINT DEFAULT 0 NULL,
+  bin_qnt_3_id SMALLINT DEFAULT 0 NULL,
+  bin_qnt_4_id SMALLINT DEFAULT 0 NULL,
+  bin_qnt_5_id SMALLINT DEFAULT 0 NULL,
+
+  bin_trng_1_id SMALLINT DEFAULT 0 NULL,
+  bin_trng_2_id SMALLINT DEFAULT 0 NULL,
+  bin_trng_3_id SMALLINT DEFAULT 0 NULL,
+  bin_trng_4_id SMALLINT DEFAULT 0 NULL,
+
+  bin_trio_1_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_2_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_3_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_4_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_5_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_6_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_7_id SMALLINT DEFAULT 0 NULL,
+  bin_trio_8_id SMALLINT DEFAULT 0 NULL,
+
+  bin_x1_id SMALLINT DEFAULT 0 NULL,
+  bin_x2_id integer DEFAULT 0 NULL,
+
+  bin_dz_0_id SMALLINT DEFAULT 0 NULL,
+  bin_dz_1_id SMALLINT DEFAULT 0 NULL,
+  bin_dz_2_id SMALLINT DEFAULT 0 NULL,
+
+  bin_lc_1_id SMALLINT DEFAULT 0 NULL,
+  bin_lc_2_id SMALLINT DEFAULT 0 NULL,
+  bin_lc_3_id SMALLINT DEFAULT 0 NULL,
+  bin_lc_4_id SMALLINT DEFAULT 0 NULL,
+  bin_lc_5_id SMALLINT DEFAULT 0 NULL,
+  
+
+
+
+
+
+
+
+
+
+
   /*
   b1_id smallint not null,
   b1_b2_id smallint not null,
@@ -721,6 +849,128 @@ create table lotofacil.lotofacil_id(
   constraint lotofacil_id_fk_24 FOREIGN KEY (lc_id) REFERENCES lotofacil.lotofacil_id_linha_coluna (lc_id) on update cascade on delete cascade
 
 );
+
+/**
+  ";bin_par_id;bin_impar_id"
+        ";bin_primo_id;bin_nao_primo_id"
+        ";bin_ext_id;bin_int_id"
+
+        ";bin_hrz_1_id;bin_hrz_2_id;bin_hrz_3_id;bin_hrz_4_id;bin_hrz_5_id"
+        ";bin_vrt_1_id;bin_vrt_2_id;bin_vrt_3_id;bin_vrt_4_id;bin_vrt_5_id"
+
+        ";bin_dge_1_id;bin_dge_2_id;bin_dge_3_id;bin_dge_4_id;bin_dge_5_id"
+        ";bin_dgd_1_id;bin_dgd_2_id;bin_dgd_3_id;bin_dgd_4_id;bin_dgd_5_id"
+
+        ";bin_esq_id;bin_dir_id"
+        ";bin_sup_id;bin_inf_id"
+
+        ";bin_sup_esq_id;bin_inf_dir_id"
+        ";bin_sup_dir_id;bin_inf_esq_id"
+
+        ";bin_crz_1_id;bin_crz_2_id;bin_crz_3_id;bin_crz_4_id;bin_crz_5_id"
+
+        ";bin_lsng_1_id;bin_lsng_2_id;bin_lsng_3_id;bin_lsng_4_id;bin_lsng_5_id"
+
+        ";bin_qnt_1_id;bin_qnt_2_id;bin_qnt_3_id;bin_qnt_4_id;bin_qnt_5_id"
+
+        ";bin_trng_1_id;bin_trng_2_id;bin_trng_3_id;bin_trng_4_id";
+        ";bin_trio_1_id;bin_trio_2_id;bin_trio_3_id;bin_trio_4_id;bin_trio_5_id;bin_trio_6_id;bin_trio_7_id;bin_trio_8_id"
+
+        ";bin_x1_id;bin_x2_id"
+
+        ";bin_dz_0_id;bin_dz_1_id;bin_dz_2_id"
+
+        ";bin_lc_1_id;bin_lc_2_id;bin_lc_3_id;bin_lc_4_id;bin_lc_5_id"
+ */
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_par_id INTEGER DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_impar_id INTEGER DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_primo_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_nao_primo_id INTEGER DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_ext_id INTEGER DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_int_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_hrz_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_hrz_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_hrz_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_hrz_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_hrz_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_vrt_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_vrt_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_vrt_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_vrt_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_vrt_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dge_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dge_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dge_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dge_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dge_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dgd_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dgd_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dgd_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dgd_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dgd_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_esq_id integer DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dir_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_sup_id integer DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_inf_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_sup_esq_id integer DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_inf_dir_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_sup_dir_id integer DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_inf_esq_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_crz_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_crz_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_crz_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_crz_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_crz_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lsng_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lsng_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lsng_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lsng_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lsng_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_qnt_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_qnt_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_qnt_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_qnt_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_qnt_5_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trng_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trng_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trng_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trng_4_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trio_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trio_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trio_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trio_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trio_5_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trio_6_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trio_7_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_trio_8_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_x1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_x2_id integer DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dz_0_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dz_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_dz_2_id SMALLINT DEFAULT 0 NULL;
+
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lc_1_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lc_2_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lc_3_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lc_4_id SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_id ADD bin_lc_5_id SMALLINT DEFAULT 0 NULL;
+
 
 /*
   Função pra atualizar o campo ltf_id da tabela lotofacil.lotofacil_resultado;
@@ -784,7 +1034,6 @@ create table lotofacil.lotofacil_id_novos_repetidos (
   -- Não precisamos validar a coluna com a quantidade pois a validação é realizada acima.
   CONSTRAINT lotofacil_id_novos_repetidos_unk UNIQUE (novos, repetidos)
 );
-
 
 
 
