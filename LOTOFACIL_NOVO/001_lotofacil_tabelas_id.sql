@@ -672,24 +672,22 @@ create table lotofacil.lotofacil_id(
 
   lc_id integer not null,
 
-
   /**
-    Nos campos, com o prefixo 'hex_', são identificadores de 0 a 15,
-    ou seja, 16 números, como funciona:
-    Iremos dividir 25 bolas em grupos de 5 bola, em horizontal e vertical.
-    Na horizontal, e na vertical, já temos estatísticas de quais combinações
-    mais sae, entretanto, não sabemos identificar quais bolas desta combinação
-    sai, estes campos tem o objetivo de identificar quais as combinações
-    de 1, 2 até 5 bolas que mais sai, assim, fica mais fácil selecionar as melhores
-    combinações, funcionará assim:
-
-    Da esquerda pra direita, iremos atribuir 1, se a bola saiu, zero, caso contrário,
-    Vamos supor que na horizontal 1, saiu as bolas:
-    1, 4, 5, então, iremos mapear assim: 1,0,0,1,1, observe que
-    nas posições 2 e 3 indica zero pois não saiu, observe que
-
+    Campos com o prefixo bin_ armazena o identificador que corresponde
+    a uma outra tabela, onde em tal tabela, há 2 ou mais campos, onde tais
+    campos tem o valor 1, se a bola saiu, 0, caso, contrário; mas pra isto,
+    devemos considerar as bolas posicionadas sequencialmente, e em ordem crescente,
+    então, por exemplo, se há um conjunto de 5 bolas, então haverá uma tabela
+    de id que terão 5 campos, então, no nosso exemplo, se as bolas forem:
+    1, 2, 3, 4 e 5, então, se na combinação saiu somente as bolas 1, 4 e 5,
+    na tabela, haverá um registro, onde tem tais valores:
+    1,0,0,1,1,
+    Observe, que o identificador não importa neste caso, então, na tabela,
+    haverá um identificar pra cada combinação de 0 e 1 possível.
 
    */
+
+
   -- Há 4096 combinações de 0 e 1, usando 12 posições.
   bin_par_id integer default 0 check (bin_par_id between 0 and 4095),
 
@@ -699,11 +697,13 @@ create table lotofacil.lotofacil_id(
   -- Há 512 combinações de 0 e 1, usando 9 posições.
   bin_primo_id smallint default 0 check (bin_primo_id between 0 and 511),
 
+  bin_nao_primo_id smallint default 0,
+
   -- Há 65536 combinações de 0 e 1, usando 16 posições.
-  bin_externo_id integer default 0 check (bin_externo_id between 0 and 65535),
+  bin_ext_id integer default 0 check (bin_ext_id between 0 and 65535),
 
   -- Há 512 combinações de 0 e 1, usando 9 posições.
-  bin_interno_id integer default 0 check (bin_interno_id between 0 and 511),
+  bin_int_id integer default 0 check (bin_int_id between 0 and 511),
 
   -- Há 32 combinações de 0 e 1, usando 5 posições.
   bin_hrz_1_id smallint default 0 check (bin_hrz_1_id between 0 and 31),
@@ -789,16 +789,6 @@ create table lotofacil.lotofacil_id(
   bin_lc_3_id SMALLINT DEFAULT 0 NULL,
   bin_lc_4_id SMALLINT DEFAULT 0 NULL,
   bin_lc_5_id SMALLINT DEFAULT 0 NULL,
-  
-
-
-
-
-
-
-
-
-
 
   /*
   b1_id smallint not null,
@@ -818,6 +808,7 @@ create table lotofacil.lotofacil_id(
   CONSTRAINT lotofacil_id_fk_2 FOREIGN KEY (par_impar_id) references lotofacil.lotofacil_id_par_impar(par_impar_id) on update cascade on delete cascade,
   CONSTRAINT lotofacil_id_fk_3 FOREIGN KEY (ext_int_id) references lotofacil.lotofacil_id_externo_interno(ext_int_id) on update cascade on delete cascade,
   CONSTRAINT lotofacil_id_fk_4 FOREIGN KEY (prm_id) references lotofacil.lotofacil_id_primo(prm_id) on update cascade on delete cascade,
+
 
   CONSTRAINT lotofacil_id_fk_5 FOREIGN KEY (hrz_id) references lotofacil.lotofacil_id_horizontal(hrz_id) on update cascade on delete cascade,
   CONSTRAINT lotofacil_id_fk_6 FOREIGN KEY (vrt_id) references lotofacil.lotofacil_id_vertical(vrt_id) on update cascade on delete cascade,
@@ -849,6 +840,169 @@ create table lotofacil.lotofacil_id(
   constraint lotofacil_id_fk_24 FOREIGN KEY (lc_id) REFERENCES lotofacil.lotofacil_id_linha_coluna (lc_id) on update cascade on delete cascade
 
 );
+
+
+/**
+  Iremos percorrer todos os registros da tabela lotofacil.lotofacil_id,
+  e pra cada identificador de cada campo, iremos atribuir um id sequencial
+  baseado em zero, a mesma que o identificador for localizado, o id sequencial
+  correspondente será incrementado.
+  A vantagem deste procedimento é que podemos, futuramente, no nosso programa
+  analisador lotofacil, ordenar por um campo específico, fazendo com que os
+  todos os identificadores selecionado apareça, depois mais outro grupo de identificadores.
+  Por exemplo, vamos supor que, o usuário selecionou os identificadores de combinação
+  par x ímpar: 1, 2, 3, e 4, então, ao ordenar pelo campo: par_impar_id,
+  o usuário, verá a cada 4 registros, um registro com o id par_impar_id 1, 2, 3 e 4, não
+  especificamente nesta ordem. O objetivo é agrupar registros de tal forma,
+  que no grupo não tem nenhum identificador repetido.
+  Pois, quando não agrupamos, corre-se o risco, por exemplo, no exemplo acima, escolhemos
+  4 identificadores par_impar_id, entretanto, sair todos os registros uma única combinação par x ímpar.
+
+ */
+drop table if exists lotofacil.lotofacil_id_classificado;
+create table lotofacil.lotofacil_id_classificado(
+  ltf_id integer not null,
+  ltf_qt integer not null,
+
+  par_impar_id integer not null,
+  prm_id integer not null,
+  ext_int_id integer not null,
+
+  hrz_id integer not null,
+  vrt_id integer not null,
+
+  dge_id integer not null,
+  dgd_id integer not null,
+
+  esq_dir_id integer not null,
+  sup_inf_id integer not null,
+
+  sup_esq_inf_dir_id integer not null,
+  sup_dir_inf_esq_id integer not null,
+
+  crz_id integer not null,
+  lsng_id integer not null,
+  qnt_id integer not null,
+
+  trng_id integer not null,
+  trio_id integer not null,
+
+  x1_x2_id integer not null,
+
+  dz_id integer not null,
+  un_id integer not null,
+  alg_id integer not null,
+
+  sm_bolas_id integer not null,
+  sm_alg_id integer not NULL,
+
+  lc_id integer not null,
+
+  -- Há 4096 combinações de 0 e 1, usando 12 posições.
+  bin_par_id integer default 0,
+
+  -- Há 8196 combinações de 0 e 1, usando 13 posições.
+  bin_impar_id integer default 0,
+
+  -- Há 512 combinações de 0 e 1, usando 9 posições.
+  bin_primo_id integer default 0,
+
+  bin_nao_primo_id integer default 0,
+
+  -- Há 65536 combinações de 0 e 1, usando 16 posições.
+  bin_ext_id integer default 0,
+
+  -- Há 512 combinações de 0 e 1, usando 9 posições.
+  bin_int_id integer default 0,
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_hrz_1_id integer default 0,
+  bin_hrz_2_id integer default 0,
+  bin_hrz_3_id integer default 0,
+  bin_hrz_4_id integer default 0,
+  bin_hrz_5_id integer default 0,
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_vrt_1_id integer default 0,
+  bin_vrt_2_id integer default 0,
+  bin_vrt_3_id integer default 0,
+  bin_vrt_4_id integer default 0,
+  bin_vrt_5_id integer default 0,
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_dge_1_id integer default 0,
+  bin_dge_2_id integer default 0,
+  bin_dge_3_id integer default 0,
+  bin_dge_4_id integer default 0,
+  bin_dge_5_id integer default 0,
+
+  -- Há 32 combinações de 0 e 1, usando 5 posições.
+  bin_dgd_1_id integer default 0,
+  bin_dgd_2_id integer default 0,
+  bin_dgd_3_id integer default 0,
+  bin_dgd_4_id integer default 0,
+  bin_dgd_5_id integer default 0,
+
+  bin_esq_id integer DEFAULT 0 NULL,
+  bin_dir_id integer DEFAULT 0 NULL,
+
+  bin_sup_id integer DEFAULT 0 NULL,
+  bin_inf_id integer DEFAULT 0 NULL,
+
+  bin_sup_esq_id integer DEFAULT 0 NULL,
+  bin_inf_dir_id integer DEFAULT 0 NULL,
+
+  bin_sup_dir_id integer DEFAULT 0 NULL,
+  bin_inf_esq_id integer DEFAULT 0 NULL,
+
+  bin_crz_1_id integer DEFAULT 0 NULL,
+  bin_crz_2_id integer DEFAULT 0 NULL,
+  bin_crz_3_id integer DEFAULT 0 NULL,
+  bin_crz_4_id integer DEFAULT 0 NULL,
+  bin_crz_5_id integer DEFAULT 0 NULL,
+
+  bin_lsng_1_id integer DEFAULT 0 NULL,
+  bin_lsng_2_id integer DEFAULT 0 NULL,
+  bin_lsng_3_id integer DEFAULT 0 NULL,
+  bin_lsng_4_id integer DEFAULT 0 NULL,
+  bin_lsng_5_id integer DEFAULT 0 NULL,
+
+  bin_qnt_1_id integer DEFAULT 0 NULL,
+  bin_qnt_2_id integer DEFAULT 0 NULL,
+  bin_qnt_3_id integer DEFAULT 0 NULL,
+  bin_qnt_4_id integer DEFAULT 0 NULL,
+  bin_qnt_5_id integer DEFAULT 0 NULL,
+
+  bin_trng_1_id integer DEFAULT 0 NULL,
+  bin_trng_2_id integer DEFAULT 0 NULL,
+  bin_trng_3_id integer DEFAULT 0 NULL,
+  bin_trng_4_id integer DEFAULT 0 NULL,
+
+  bin_trio_1_id integer DEFAULT 0 NULL,
+  bin_trio_2_id integer DEFAULT 0 NULL,
+  bin_trio_3_id integer DEFAULT 0 NULL,
+  bin_trio_4_id integer DEFAULT 0 NULL,
+  bin_trio_5_id integer DEFAULT 0 NULL,
+  bin_trio_6_id integer DEFAULT 0 NULL,
+  bin_trio_7_id integer DEFAULT 0 NULL,
+  bin_trio_8_id integer DEFAULT 0 NULL,
+
+  bin_x1_id integer DEFAULT 0 NULL,
+  bin_x2_id integer DEFAULT 0 NULL,
+
+  bin_dz_0_id integer DEFAULT 0 NULL,
+  bin_dz_1_id integer DEFAULT 0 NULL,
+  bin_dz_2_id integer DEFAULT 0 NULL,
+
+  bin_lc_1_id integer DEFAULT 0 NULL,
+  bin_lc_2_id integer DEFAULT 0 NULL,
+  bin_lc_3_id integer DEFAULT 0 NULL,
+  bin_lc_4_id integer DEFAULT 0 NULL,
+  bin_lc_5_id integer DEFAULT 0 NULL
+
+);
+
+
 
 /**
   ";bin_par_id;bin_impar_id"

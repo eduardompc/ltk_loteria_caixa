@@ -100,52 +100,19 @@ and num_8 + num_10 + num_16 = 3
 and ltf_a.ltf_qt = 15;
 
 
+Select ltf_a.concurso, ltf_b.novos, ltf_b.repetidos from lotofacil.lotofacil_resultado_novos_repetidos ltf_a, lotofacil.lotofacil_id_novos_repetidos ltf_b
+  where ltf_a.novos_repetidos_id = ltf_b.novos_repetidos_id
+and concurso in (1721, 1720, 1719, 716, 717, 718, 653, 654, 655, 216, 217, 218)
+order by concurso asc, ltf_a.novos_repetidos_id asc;
 
 
-INSERT INTO lotofacil.lotofacil_filtros
-(data, ltf_id, ltf_qt, concurso, acertos,
- concurso_bola_qt_vezes, data_aleatorio,
- concurso_soma_frequencia_bolas, id_seq_cmb_em_grupos)
-
-
-  SELECT
-    now(),
-    ltf_a.ltf_id,
-    ltf_a.ltf_qt,
-    0,
-    0,
-    0,
-    now(),
-    0,
-    0
-  FROM lotofacil.lotofacil_bolas ltf_a, lotofacil.lotofacil_num ltf_b, lotofacil.lotofacil_id ltf_c
-    , lotofacil.lotofacil_novos_repetidos ltf_d
-  WHERE ltf_a.ltf_id = ltf_b.ltf_id
-        AND ltf_a.ltf_id = ltf_c.ltf_id
-        AND ltf_a.ltf_id = ltf_d.ltf_id
-        AND ltf_b.ltf_id = ltf_c.ltf_id
-        AND ltf_b.ltf_id = ltf_d.ltf_id
-        AND ltf_c.ltf_id = ltf_d.ltf_id
-        AND ltf_a.ltf_qt = 15
-        --and ltf_d.novos_repetidos_id in (5, 6, 7)
-        AND
-        (
-          (num_1 + num_3 + num_5 + num_6 + num_7 + num_10 + num_13 + num_14 + num_15 + num_16 + num_17 + num_18 + num_23
-           + num_24 + num_25 = 15)
-          OR (num_2 + num_4 + num_5 + num_7 + num_9 + num_11 + num_12 + num_13 + num_15 + num_16 + num_18 + num_21 +
-              num_23 + num_24 + num_25 = 15)
-          OR (num_1 + num_2 + num_3 + num_8 + num_9 + num_10 + num_11 + num_13 + num_16 + num_19 + num_20 + num_21 +
-              num_23 + num_24 + num_25 = 15)
-          OR (num_1 + num_2 + num_3 + num_5 + num_8 + num_10 + num_11 + num_13 + num_14 + num_15 + num_17 + num_19 +
-              num_21 + num_22 + num_24 = 15)
-
-
-        );
-
-
-
-
-
+Select min(ltf_id) as min_ltf_id,
+  max(ltf_id) max_ltf_id,
+  min(par_impar_id) as min_par_impar_id,
+  max(par_impar_id) as max_par_impar_id,
+  min(prm_id) as min_prm_id,
+  max(prm_id) as max_prm_id
+from lotofacil.lotofacil_id;
 
 
 
