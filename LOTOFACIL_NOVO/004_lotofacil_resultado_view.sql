@@ -2735,4 +2735,20 @@ CREATE VIEW lotofacil.v_lotofacil_num_nao_sorteado AS
                        FROM lotofacil.lotofacil_resultado_id);
 
 
+drop view if exists lotofacil.v_lotofacil_resultado_novos_repetidos;
+create view lotofacil.v_lotofacil_resultado_novos_repetidos
+  AS
+  Select
+    ltf_a.concurso,
+    ltf_b.novos,
+    ltf_b.repetidos
+  from lotofacil.lotofacil_resultado_novos_repetidos ltf_a,
+    lotofacil.lotofacil_id_novos_repetidos ltf_b
+  where ltf_a.novos_repetidos_id = ltf_b.novos_repetidos_id
+  order by ltf_a.concurso
+
+
+
+
+
 

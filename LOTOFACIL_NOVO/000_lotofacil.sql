@@ -322,7 +322,8 @@ select * from lotofacil.fn_lotofacil_resultado_frequencia_total_por_concurso(164
 
 
 /**
-  Esta tabela armazena pra cada
+  Nesta tabela fica armazenada a comparação de todas as combinações da lotofacil,
+  com o concurso sorteado pela caixa.
  */
 drop table if exists lotofacil.lotofacil_novos_repetidos;
 create table lotofacil.lotofacil_novos_repetidos(
@@ -349,11 +350,29 @@ create table lotofacil.lotofacil_novos_repetidos(
   cmp_b13 NUMERIC DEFAULT 0,
   cmp_b14 NUMERIC DEFAULT 0,
   cmp_b15 NUMERIC DEFAULT 0,
-  
+
+  qt_bolas_subindo_na_mesma_coluna smallint default 0,
+  qt_bolas_descendo_na_mesma_coluna smallint default 0,
+  qt_bolas_iguais_na_mesma_coluna smallint default 0,
+
+
+  /**
+    Nos três campos abaixo, iremos contabilizar a quantidade de bolas
+    repetidas em relação a menor combinação da lotofacil:
+    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   */
+  qt_de_bolas_em_comum smallint default 0,
+  qt_de_bolas_em_comum_na_mesma_coluna smallint default 0,
+
+
   CONSTRAINT lotofacil_novos_repetidos_pk PRIMARY KEY (ltf_id),
   CONSTRAINT lotofacil_novos_repetidos_fk FOREIGN KEY (ltf_id) REFERENCES lotofacil.lotofacil_num(ltf_id)
   on update cascade on delete cascade
 );
+
+ALTER TABLE lotofacil.lotofacil_novos_repetidos ADD qt_bolas_subindo_na_mesma_coluna SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_novos_repetidos ADD qt_bolas_descendo_na_mesma_coluna SMALLINT DEFAULT 0 NULL;
+ALTER TABLE lotofacil.lotofacil_novos_repetidos ADD qt_bolas_iguais_na_mesma_coluna SMALLINT DEFAULT 0 NULL;
 
 Select lotofacil.fn_lotofacil_novos_repetidos_drop_constraint();
 Select lotofacil.fn_lotofacil_novos_repetidos_add_constraint();

@@ -114,6 +114,57 @@ Select min(ltf_id) as min_ltf_id,
   max(prm_id) as max_prm_id
 from lotofacil.lotofacil_id;
 
+SELECT column_name FROM information_schema.columns
+where table_name = 'lotofacil_id'
+order by ordinal_position;
+
+
+Select lotofacil_id.par_impar_id, lotofacil_id_classificado.par_impar_id,
+Now(),lotofacil.lotofacil_num.ltf_id,lotofacil.lotofacil_num.ltf_qt,-16512,0,novos_repetidos_id_alternado,novos_repetidos_id
+from
+lotofacil.lotofacil_num,lotofacil.lotofacil_bolas,lotofacil.lotofacil_novos_repetidos,lotofacil.lotofacil_id,lotofacil.v_lotofacil_num_nao_sorteado,lotofacil.lotofacil_id_classificado
+where
+lotofacil.lotofacil_num.ltf_id = lotofacil.lotofacil_bolas.ltf_id
+and
+lotofacil.lotofacil_num.ltf_id = lotofacil.lotofacil_novos_repetidos.ltf_id
+and
+lotofacil.lotofacil_num.ltf_id = lotofacil.lotofacil_id.ltf_id
+and
+lotofacil.lotofacil_num.ltf_id = lotofacil.v_lotofacil_num_nao_sorteado.ltf_id
+and
+lotofacil.lotofacil_num.ltf_id = lotofacil.lotofacil_id_classificado.ltf_id
+and
+lotofacil.lotofacil_bolas.ltf_id = lotofacil.lotofacil_novos_repetidos.ltf_id
+and
+lotofacil.lotofacil_bolas.ltf_id = lotofacil.lotofacil_id.ltf_id
+and
+lotofacil.lotofacil_bolas.ltf_id = lotofacil.v_lotofacil_num_nao_sorteado.ltf_id
+and
+lotofacil.lotofacil_bolas.ltf_id = lotofacil.lotofacil_id_classificado.ltf_id
+and
+lotofacil.lotofacil_novos_repetidos.ltf_id = lotofacil.lotofacil_id.ltf_id
+and
+lotofacil.lotofacil_novos_repetidos.ltf_id = lotofacil.v_lotofacil_num_nao_sorteado.ltf_id
+and
+lotofacil.lotofacil_novos_repetidos.ltf_id = lotofacil.lotofacil_id_classificado.ltf_id
+and
+lotofacil.lotofacil_id.ltf_id = lotofacil.v_lotofacil_num_nao_sorteado.ltf_id
+and
+lotofacil.lotofacil_id.ltf_id = lotofacil.lotofacil_id_classificado.ltf_id
+and
+lotofacil.v_lotofacil_num_nao_sorteado.ltf_id = lotofacil.lotofacil_id_classificado.ltf_id
+
+and
+(
+  (lotofacil_id.par_impar_id in (15,19,11))
+) and (
+(num_7 + num_12 between 2 and 2)
+)
+and
+(lotofacil.lotofacil_num.ltf_qt not in (16,17,18))
+order by lotofacil_id_classificado.par_impar_id asc
+limit 1000
+
 
 
 

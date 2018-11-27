@@ -258,6 +258,93 @@ END;
 $$;
 
 
-SELECT
-FROM lotofacil.fn_ltf_res_novos_repetidos_atualizar(1, 2000);
+/**
+  Na tabela lotofacil.lotofacil_novos_repetidos há três campos:
+  qt_bolas_iguais_na_mesma_coluna,
+  qt_bolas_subindo_na_mesma_coluna,
+  qt_bolas_descendo_na_mesma_coluna
+  Iremos gerar estatística pra a mesma.
+ */
+
+Drop View if exists lotofacil.v_lotofacil_resultado_novos_repetidos_bolas_repetidas_na_mesma_coluna;
+Create View lotofacil.v_lotofacil_resultado_novos_repetidos_bolas_repetidas_mesma_coluna
+  AS
+  Select ltf_a.qt_bolas_iguais_na_mesma_coluna,
+    ltf_a.qt_vz as cmb_qt,
+    case when ltf_b.qt_vz is null then 0 else ltf_b.qt_vz end as res_qt
+  from
+    (Select qt_bolas_iguais_na_mesma_coluna, count(*) as qt_vz
+    from lotofacil.lotofacil_novos_repetidos
+      where ltf_qt = 15
+      group by qt_bolas_iguais_na_mesma_coluna
+      order by qt_vz desc
+    ) ltf_a left join
+    (
+    Select qt_bolas_iguais_na_mesma_coluna, count(*) as qt_vz
+  from lotofacil.lotofacil_novos_repetidos ltf_a,
+  lotofacil.lotofacil_resultado_id ltf_b
+  where ltf_a.ltf_id = ltf_b.ltf_id
+    group by qt_bolas_iguais_na_mesma_coluna
+      order by qt_vz desc
+    ) ltf_b
+    on ltf_a.qt_bolas_iguais_na_mesma_coluna =
+      ltf_b.qt_bolas_iguais_na_mesma_coluna
+  order by res_qt desc, cmb_qt desc;
+
+Select novos, repetidos, cmb_qt, res_qt
+from
+
+  (Select novos_repetidos_id, count(*) as qt_vz
+  from lotofacil.lotofacil_novos_repetidos
+  where ltf_qt = 15
+  group by novos_repetidos_id) ltf_a
+
+  (Select ltf_a.novos_repetidos_id, count(*) as qt_vz
+  from lotofacil.lotofacil_novos_repetidos ltf_a,
+  lotofacil.lotofacil_resultado_id ltf_b
+    where ltf_a.ltf_id = ltf_b.ltf_id
+  group by ltf_a.novos_repetidos_id
+  )
+
+  Select ltf_a.novos_repetidos_id,
+    ltf_a.qt_bolas_iguais_na_mesma_coluna,
+    count(*) as qt_vz
+  from lotofacil.lotofacil_novos_repetidos ltf_a,
+  lotofacil.lotofacil_resultado_id ltf_b
+    where ltf_a.ltf_id = ltf_b.ltf_id
+  group by ltf_a.novos_repetidos_id,
+    ltf_a.qt_bolas_iguais_na_mesma_coluna
+
+
+
+
+
+Select qt_bolas_descendo_na_mesma_coluna, count(*) as qt_vz
+  from lotofacil.lotofacil_novos_repetidos ltf_a,
+  lotofacil.lotofacil_resultado_id ltf_b
+  where ltf_a.ltf_id = ltf_b.ltf_id
+    group by qt_bolas_descendo_na_mesma_coluna
+      order by qt_vz desc;
+
+Select novos_repetidos_id, count(*) as qt_vz
+  from lotofacil.lotofacil_novos_repetidos ltf_a,
+  lotofacil.lotofacil_resultado_id ltf_b
+  where ltf_a.ltf_id = ltf_b.ltf_id
+    group by novos_repetidos_id
+      order by qt_vz desc
+
+Select novos_repetidos_id as novo,
+  15 - novos_repetidos_id as repetido, count(*) as qt_vz
+  from lotofacil.lotofacil_novos_repetidos ltf_a
+    where ltf_qt = 15
+    group by novos_repetidos_id
+      order by qt_vz desc
+
+
+
+
+
+
+
+
 
