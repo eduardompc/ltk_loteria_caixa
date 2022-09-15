@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="C:\lazarus\fpc\3.0.4\bin\x86_64-win64\fpc.exe" Date="1331391477"/>
+  <Params Value=" -MObjFPC -Scaghi -CirotR -O1 -gw2 -godwarfsets -gl -gh -Xg -gt -l -vewnhibq -FiC:\Users\empcs\Documents\GitHub\ltk_loteria_caixa\GERAR_SCRIPT_PRA_ANALISAR_B1_A_B15\lib\x86_64-win64 -FuC:\Users\empcs\Documents\GitHub\ltk_loteria_caixa\GERAR_SCRIPT_PRA_ANALISAR_B1_A_B15\ -FUC:\Users\empcs\Documents\GitHub\ltk_loteria_caixa\GERAR_SCRIPT_PRA_ANALISAR_B1_A_B15\lib\x86_64-win64\ -FEC:\Users\empcs\Documents\GitHub\ltk_loteria_caixa\GERAR_SCRIPT_PRA_ANALISAR_B1_A_B15\ -oC:\Users\empcs\Documents\GitHub\ltk_loteria_caixa\GERAR_SCRIPT_PRA_ANALISAR_B1_A_B15\gerar_sql_b1_a_b15.exe gerar_sql_b1_a_b15.lpr"/>
+  <Complete Value="False"/>
+</CONFIG>
